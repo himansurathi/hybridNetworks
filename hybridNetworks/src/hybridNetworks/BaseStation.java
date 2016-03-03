@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class BaseStation {
@@ -15,7 +17,7 @@ public class BaseStation {
     double y;
     double maxBandwidth;
     double frameSize;
-    PriorityQueue requests;
+    PriorityQueue<Request> requests;
 
     public BaseStation(int idVar, double xVar, double yVar, double maxBandwidthVar, double frameSizeVar) {
         id = idVar;
