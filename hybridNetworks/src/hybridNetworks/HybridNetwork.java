@@ -20,6 +20,9 @@ public class HybridNetwork {
 		 */
         requests = Request.readInput();
         int out  = requests.length;
+        for(Request i:requests){
+        	System.out.println(i);
+        }
         System.out.println(out);
 		
 		for(int i=0;i<Constants.SIMULATION_TIME;i++){

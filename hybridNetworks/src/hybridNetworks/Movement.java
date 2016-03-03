@@ -14,6 +14,13 @@ public class Movement {
 	double durationMovement;
 	Node nodeObject;
 
+	/**
+     * Constructor 
+	 * @param idVar
+	 * @param angleVar
+	 * @param speedVar
+	 * @param durationMovementVar
+	 */
     public Movement(int idVar, double angleVar, double speedVar, double durationMovementVar ) {
         id = idVar ;
         angle =  angleVar ;
@@ -22,8 +29,56 @@ public class Movement {
     }
 	
         
+	/**
+	 * @return the count
+	 */
+	public static int getCount() {
+		return count;
+	}
+
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+
+	/**
+	 * @return the angle
+	 */
+	public double getAngle() {
+		return angle;
+	}
+
+
+	/**
+	 * @return the speed
+	 */
+	public double getSpeed() {
+		return speed;
+	}
+
+
+	/**
+	 * @return the durationMovement
+	 */
+	public double getDurationMovement() {
+		return durationMovement;
+	}
+
+
+	/**
+	 * @return the nodeObject
+	 */
+	public Node getNodeObject() {
+		return nodeObject;
+	}
+
+
 	public static Movement[] readInput() throws FileNotFoundException, IOException{
-        FileInputStream fstream = new FileInputStream("");
+        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR+Constants.MOVEMENT_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         String strLine;

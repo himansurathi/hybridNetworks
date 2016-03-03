@@ -13,7 +13,13 @@ public class Node {
     double x;
     double y;
     SubscriberStation subscriberObject;
-
+    
+    /**
+     * Constructor 
+     * @param idVar
+     * @param xVar
+     * @param yVar
+     */
     public Node(int idVar, int xVar, int yVar) {
         id = idVar;
         x = xVar ;
@@ -21,8 +27,48 @@ public class Node {
     }
     
 
-    public static Node[] readInput() throws FileNotFoundException, IOException {
-        FileInputStream fstream = new FileInputStream("");
+    /**
+	 * @return the count
+	 */
+	public static int getCount() {
+		return count;
+	}
+
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+
+	/**
+	 * @return the x
+	 */
+	public double getX() {
+		return x;
+	}
+
+
+	/**
+	 * @return the y
+	 */
+	public double getY() {
+		return y;
+	}
+
+
+	/**
+	 * @return the subscriberObject
+	 */
+	public SubscriberStation getSubscriberObject() {
+		return subscriberObject;
+	}
+
+
+	public static Node[] readInput() throws FileNotFoundException, IOException {
+        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR+Constants.NODE_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         String strLine;

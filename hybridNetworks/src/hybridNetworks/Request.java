@@ -30,9 +30,65 @@ public class Request {
         
     }
 
-    public static Request[] readInput() throws FileNotFoundException, IOException {
+    /**
+	 * @return the count
+	 */
+	public static int getCount() {
+		return count;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @return the priority
+	 */
+	public int getPriority() {
+		return priority;
+	}
+
+	/**
+	 * @return the currentAllocatedRequest
+	 */
+	public double getCurrentAllocatedRequest() {
+		return currentAllocatedRequest;
+	}
+
+	/**
+	 * @return the maxRequiredRequest
+	 */
+	public double getMaxRequiredRequest() {
+		return maxRequiredRequest;
+	}
+
+	/**
+	 * @return the durationRequest
+	 */
+	public double getDurationRequest() {
+		return durationRequest;
+	}
+
+	/**
+	 * @return the nodeObject
+	 */
+	public Node getNodeObject() {
+		return nodeObject;
+	}
+
+	/**
+	 * @return the startDate
+	 */
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public static Request[] readInput() throws FileNotFoundException, IOException {
         //Channge the  following file path to absolute path for the input 
-        FileInputStream fstream = new FileInputStream("/home/ashis/Documents/Projects/hybridNetworks/hybridNetworks/src/hybridNetworks/input/requests.txt");
+    	FileInputStream fstream = new FileInputStream(Constants.CURR_DIR+Constants.REQUEST_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         String strLine;
@@ -56,28 +112,39 @@ public class Request {
 
         return requests;
     }
-
+    /**
+     * To convert Request object to a String Object to display all the Requests
+     */
     @Override
     public String toString() {
         return id + " : " + priority + " : " + currentAllocatedRequest + " : " + maxRequiredRequest + " : " + durationRequest + " : " + startDate + " : ";
     }
-
+    /**
+     * Arrange all the Requests on basis of time and store them in a priority queue
+     * @param requests
+     * @return
+     */
     public static PriorityQueue<Request> arrangeRequestsOnBasisOfTime(List<Request> requests) {
-        TimeComparator timeComparator = new TimeComparator();
-        PriorityQueue<Request> sortedRequests = new PriorityQueue<Request>(count, timeComparator);
+        TimeComparator timeComparator = new TimeComparator(); //Creating a user defined comparator for time
+        PriorityQueue<Request> sortedRequests = new PriorityQueue<Request>(count, timeComparator); // Store the requests in Priority Queue on basis of timeComparator defined.
         for (Request i : requests) {
             sortedRequests.add(i);
         }
-        return sortedRequests;
+        return sortedRequests; //Return the priority Queue.
     }
-
+    
+    /**
+     * Arrange all the Requests on basis of priority and store them in a priority queue
+     * @param requests
+     * @return
+     */
     public static PriorityQueue<Request> arrangeRequestsOnBasisOfPriority(List<Request> requests) {
-        PriorityComparator priorityComparator = new PriorityComparator();
-        PriorityQueue<Request> sortedRequests = new PriorityQueue<Request>(count, priorityComparator);
+        PriorityComparator priorityComparator = new PriorityComparator();//Creating a user defined comparator for priority
+        PriorityQueue<Request> sortedRequests = new PriorityQueue<Request>(count, priorityComparator); // Store the requests in Priority Queue on basis of priorityComparator defined.
         for (Request i : requests) {
             sortedRequests.add(i);
         }
-        return sortedRequests;
+        return sortedRequests; // Returns the Priority Queue
     }
 
 }

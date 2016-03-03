@@ -18,7 +18,15 @@ public class BaseStation {
     double maxBandwidth;
     double frameSize;
     PriorityQueue<Request> requests;
-
+    
+    /**
+     * Constructor 
+     * @param idVar
+     * @param xVar
+     * @param yVar
+     * @param maxBandwidthVar
+     * @param frameSizeVar
+     */
     public BaseStation(int idVar, double xVar, double yVar, double maxBandwidthVar, double frameSizeVar) {
         id = idVar;
         x = xVar;
@@ -26,20 +34,67 @@ public class BaseStation {
         maxBandwidth = maxBandwidthVar;
         frameSize = frameSizeVar;
     }
-
+    /**
+	 * @return the count
+	 */
+	public static int getCount() {
+		return count;
+	}
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+	/**
+	 * @return the x
+	 */
+	public double getX() {
+		return x;
+	}
+	/**
+	 * @return the y
+	 */
+	public double getY() {
+		return y;
+	}
+	/**
+	 * @return the maxBandwidth
+	 */
+	public double getMaxBandwidth() {
+		return maxBandwidth;
+	}
+	/**
+	 * @return the frameSize
+	 */
+	public double getFrameSize() {
+		return frameSize;
+	}
+	/**
+	 * @return the requests
+	 */
+	public PriorityQueue<Request> getRequests() {
+		return requests;
+	}
+	/**
+     * Scheduling of all Requests of Base Station on basis of priority of the request
+     * and assign the requests in priority queue.
+     * @param allowedRequests
+     * @return
+     */
     public List<Request> scheduling(List<Request> allowedRequests){
-        requests=Request.arrangeRequestsOnBasisOfPriority(allowedRequests);
+        requests=Request.arrangeRequestsOnBasisOfPriority(allowedRequests);// Sort the Requests on basis of priority
         List<Request> servedRequests=new ArrayList<Request>();
         for(Request i: requests){
-            i.currentAllocatedRequest=i.maxRequiredRequest;
-            servedRequests.add(i);
-            requests.remove(i);
+            i.currentAllocatedRequest=i.maxRequiredRequest;// Allot the Required Bandwidth to the Current Request
+            servedRequests.add(i); //Store the Served Requests in the queue 
+            requests.remove(i); // Delete the requests already served 
         }
-        return servedRequests;
+        return servedRequests; // Return the served Requests
     }
 
     public static BaseStation[] readInput() throws FileNotFoundException, IOException {
-        FileInputStream fstream = new FileInputStream("/home/ashis/Documents/Projects/hybridNetworks/hybridNetworks/src/hybridNetworks/input/baseStations.txt");
+        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR+Constants.BS_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         String strLine;
