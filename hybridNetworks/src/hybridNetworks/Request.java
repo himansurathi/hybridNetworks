@@ -32,7 +32,7 @@ public class Request {
 
     public static Request[] readInput() throws FileNotFoundException, IOException {
         //Channge the  following file path to absolute path for the input 
-        FileInputStream fstream = new FileInputStream("/home/ashis/Documents/Projects/hybridNetworks/hybridNetworks/src/hybridNetworks/Requests.txt");
+        FileInputStream fstream = new FileInputStream("/home/ashis/Documents/Projects/hybridNetworks/hybridNetworks/src/hybridNetworks/input/requests.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         String strLine;
