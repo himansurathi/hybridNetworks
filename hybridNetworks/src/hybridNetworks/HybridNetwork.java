@@ -1,17 +1,26 @@
 package hybridNetworks;
 import hybridNetworks.Constants.*;
+import hybridNetworks.Request;
+import java.io.IOException;
 
 public class HybridNetwork {
+    private static Request[] requests;
 
-	public static void main(String[] args) {
+   // Request[] requests;
+    
+	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		
+	//requests = new Request[10];	
+            
 		/*
 		 * Read Input from all files in input directory
 		 * and assign the values to respective member variables.
 		 * 
 		 * 
 		 */
+        requests = Request.readInput();
+        int out  = requests.length;
+        System.out.println(out);
 		
 		for(int i=0;i<Constants.SIMULATION_TIME;i++){
 			/**
