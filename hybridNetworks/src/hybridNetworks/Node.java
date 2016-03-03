@@ -10,21 +10,25 @@ public class Node {
 
     static int count;
     int id;
-    double x;
-    double y;
+    double initialX;
+    double initialY;
+    double currentX;
+    double currentY;
+    int subscriberId;
     SubscriberStation subscriberObject;
 
     /**
-     * Constructor
-     *
+     * 
      * @param idVar
      * @param xVar
      * @param yVar
+     * @param subscriberIdVar
      */
-    public Node(int idVar, int xVar, int yVar) {
+    public Node(int idVar, double xVar, double yVar,int subscriberIdVar) {
         id = idVar;
-        x = xVar;
-        y = yVar;
+        initialX = currentX=xVar;
+        initialY = currentY=yVar;
+        subscriberId=subscriberIdVar;
     }
 
     /**
@@ -41,27 +45,63 @@ public class Node {
         return id;
     }
 
-    /**
-     * @return the x
-     */
-    public double getX() {
-        return x;
-    }
 
     /**
-     * @return the y
-     */
-    public double getY() {
-        return y;
-    }
+	 * @return the initialX
+	 */
+	public double getInitialX() {
+		return initialX;
+	}
 
-    /**
+	/**
+	 * @return the initialY
+	 */
+	public double getInitialY() {
+		return initialY;
+	}
+
+	/**
+	 * @return the currentX
+	 */
+	public double getCurrentX() {
+		return currentX;
+	}
+
+	/**
+	 * @return the currentY
+	 */
+	public double getCurrentY() {
+		return currentY;
+	}
+
+	/**
+	 * @return the subscriberId
+	 */
+	public int getSubscriberId() {
+		return subscriberId;
+	}
+
+	/**
      * @return the subscriberObject
      */
     public SubscriberStation getSubscriberObject() {
         return subscriberObject;
     }
+    
+    /**
+     * To convert Node object to a String Object to display all the Requests
+     */
+    @Override
+    public String toString() {
+        return id + " : " + initialX+" : "+initialY+ " : " + currentX+ " : " + currentY + " : " + subscriberId;
+    }
 
+    /**
+     * Read Node File as Input
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static Node[] readInput() throws FileNotFoundException, IOException {
 
         /**
@@ -88,9 +128,10 @@ public class Node {
         for (int i = 0; i < inputCount; i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
-            int x = Integer.parseInt(splited[0]);
-            int y = Integer.parseInt(splited[1]);
-            nodes[i] = new Node(i, x, y);
+            double x = Double.parseDouble(splited[0]);
+            double y = Double.parseDouble(splited[1]);
+            int subscriberId = Integer.parseInt(splited[2]);
+            nodes[i] = new Node(i, x, y,subscriberId);
         }
 
         /**
@@ -101,5 +142,4 @@ public class Node {
         return nodes;
 
     }
-
 }

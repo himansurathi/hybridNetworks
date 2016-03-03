@@ -17,23 +17,26 @@ public class BaseStation {
     double y;
     double maxBandwidth;
     double frameSize;
+    double range; 
     PriorityQueue<Request> requests;
 
     /**
      * Constructor
-     *
+	 *
      * @param idVar
      * @param xVar
      * @param yVar
      * @param maxBandwidthVar
      * @param frameSizeVar
+     * @param rangeVar
      */
-    public BaseStation(int idVar, double xVar, double yVar, double maxBandwidthVar, double frameSizeVar) {
+    public BaseStation(int idVar, double xVar, double yVar, double maxBandwidthVar, double frameSizeVar,double rangeVar) {
         id = idVar;
         x = xVar;
         y = yVar;
         maxBandwidth = maxBandwidthVar;
         frameSize = frameSizeVar;
+        range=rangeVar;
     }
 
     /**
@@ -43,7 +46,7 @@ public class BaseStation {
         return count;
     }
 
-    /**
+	/**
      * @return the id
      */
     public int getId() {
@@ -79,11 +82,28 @@ public class BaseStation {
     }
 
     /**
+	 * @return the range
+	 */
+	public double getRange() {
+		return range;
+	}
+
+
+    /**
      * @return the requests
      */
     public PriorityQueue<Request> getRequests() {
         return requests;
     }
+    
+    /**
+     * To convert SubscriberStation object to a String Object to display all the Requests
+     */
+    @Override
+    public String toString() {
+        return id + " : " +x+" : "+y+ " : " + maxBandwidth+ " : " + frameSize+" : "+range;
+    }
+
 
     /**
      * Scheduling of all Requests of Base Station on basis of priority of the
@@ -102,7 +122,13 @@ public class BaseStation {
         }
         return servedRequests; // Return the served Requests
     }
-
+    
+    /**
+     * Read Base Station File as Input
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static BaseStation[] readInput() throws FileNotFoundException, IOException {
         FileInputStream fstream = new FileInputStream(Constants.CURR_DIR + Constants.BS_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
@@ -125,11 +151,12 @@ public class BaseStation {
         for (int i = 0; i < inputCount; i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
-            int x = Integer.parseInt(splited[0]);
-            int y = Integer.parseInt(splited[1]);
-            int maxBandwidth = Integer.parseInt(splited[2]);
-            int frameSize = Integer.parseInt(splited[3]);
-            baseStations[i] = new BaseStation(i, x, y, maxBandwidth, frameSize);
+            double x = Double.parseDouble(splited[0]);
+            double y = Double.parseDouble(splited[1]);
+            double maxBandwidth = Double.parseDouble(splited[2]);
+            double frameSize = Double.parseDouble(splited[3]);
+            double range = Double.parseDouble(splited[4]);
+            baseStations[i] = new BaseStation(i, x, y, maxBandwidth, frameSize,range);
         }
 
         /**

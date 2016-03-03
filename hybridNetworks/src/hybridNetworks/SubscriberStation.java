@@ -12,27 +12,39 @@ import java.io.InputStreamReader;
 
 public class SubscriberStation {
 
+    static int count;
     int id;
     double x;
     double y;
     double maxBandwidth;
-    PriorityQueue<Request> requests;
+    double range;
+    int baseId;
     BaseStation baseObject;
-    static int count;
-
+    PriorityQueue<Request> requests;
+    
     /**
      * Constructor
-     *
      * @param idVar
      * @param xVar
      * @param yVar
      * @param maxBandwidthVar
+     * @param rangeVar
+     * @param baseIdVar
      */
-    public SubscriberStation(int idVar, double xVar, double yVar, double maxBandwidthVar) {
+    public SubscriberStation(int idVar, double xVar, double yVar, double maxBandwidthVar,double rangeVar,int baseIdVar) {
         id = idVar;
         x = xVar;
         y = yVar;
         maxBandwidth = maxBandwidthVar;
+        range=rangeVar;
+        baseId=baseIdVar;
+    }
+
+    /**
+     * @return the count
+     */
+    public static int getCount() {
+        return count;
     }
 
     /**
@@ -63,6 +75,27 @@ public class SubscriberStation {
         return maxBandwidth;
     }
 
+        /**
+	 * @return the range
+	 */
+	public double getRange() {
+		return range;
+	}
+
+	/**
+	 * @return the baseId
+	 */
+	public int getBaseId() {
+		return baseId;
+	}
+
+	/**
+     * @return the baseObject
+     */
+    public BaseStation getBaseObject() {
+        return baseObject;
+    }
+
     /**
      * @return the requests
      */
@@ -71,20 +104,14 @@ public class SubscriberStation {
     }
 
     /**
-     * @return the baseObject
+     * To convert SubscriberStation object to a String Object to display all the Requests
      */
-    public BaseStation getBaseObject() {
-        return baseObject;
+    @Override
+    public String toString() {
+        return id + " : " +x+" : "+y+ " : " + maxBandwidth+ " : " + range + " : " + baseId;
     }
 
-    /**
-     * @return the count
-     */
-    public static int getCount() {
-        return count;
-    }
-
-    /**
+	/**
      * Scheduling of the requests available at each subscriber stations
      * according to maximum allowed requests that can be transferred for each of
      * the individual subscriber- base station links. The functions returns all
@@ -107,7 +134,13 @@ public class SubscriberStation {
         return allowedRequest; // Returns List of Allowed Requests
 
     }
-
+    
+    /**
+     * Read Subscriber Station File as Input
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static SubscriberStation[] readInput() throws FileNotFoundException, IOException {
         /**
          * Open file input stream for reading
@@ -134,10 +167,12 @@ public class SubscriberStation {
         for (int i = 0; i < inputCount; i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
-            int x = Integer.parseInt(splited[0]);
-            int y = Integer.parseInt(splited[1]);
-            int maxBandwidth = Integer.parseInt(splited[2]);
-            subscriberStations[i] = new SubscriberStation(i, x, y, maxBandwidth);
+            double x = Double.parseDouble(splited[0]);
+            double y = Double.parseDouble(splited[1]);
+            double maxBandwidth = Double.parseDouble(splited[2]);
+            double range = Double.parseDouble(splited[3]);
+            int baseId = Integer.parseInt(splited[4]);
+            subscriberStations[i] = new SubscriberStation(i, x, y, maxBandwidth,range,baseId);
         }
 
         /**

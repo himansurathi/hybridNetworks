@@ -8,6 +8,11 @@ public class TimeComparator implements Comparator<Request> {
 	
 	@Override
 	public int compare(Request r1,Request r2){
-		return (r1.startDate).compareTo(r2.startDate);
+		if(r1.startTimeRequest<r2.startTimeRequest)
+			return -1;
+		else if(r1.startTimeRequest>r2.startTimeRequest)
+			return 1;
+		else 
+			return 0;
 	}
 }

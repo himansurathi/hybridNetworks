@@ -13,24 +13,26 @@ public class Movement {
     double angle;
     double speed;
     double durationMovement;
+    int nodeId;
     Node nodeObject;
 
     /**
      * Constructor
-     *
      * @param idVar
      * @param angleVar
      * @param speedVar
      * @param durationMovementVar
+     * @param nodeIdVar
      */
-    public Movement(int idVar, double angleVar, double speedVar, double durationMovementVar) {
+    public Movement(int idVar, double angleVar, double speedVar, double durationMovementVar,int nodeIdVar) {
         id = idVar;
         angle = angleVar;
         speed = speedVar;
         durationMovement = durationMovementVar;
+        nodeId=nodeIdVar;
     }
 
-    /**
+	/**
      * @return the count
      */
     public static int getCount() {
@@ -66,6 +68,13 @@ public class Movement {
     }
 
     /**
+	 * @return the nodeId
+	 */
+	public int getNodeId() {
+		return nodeId;
+	}
+
+    /**
      * @return the nodeObject
      */
     public Node getNodeObject() {
@@ -73,7 +82,18 @@ public class Movement {
     }
 
     /**
-     * Open file input stream for reading
+     * To convert Movement object to a String Object to display all the Requests
+     */
+    @Override
+    public String toString() {
+        return id + " : " +angle+" : "+speed+ " : " +durationMovement+ " : " + nodeId;
+    }
+    
+    /**
+     * Read Movement File as Input
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
      */
     public static Movement[] readInput() throws FileNotFoundException, IOException {
         FileInputStream fstream = new FileInputStream(Constants.CURR_DIR + Constants.MOVEMENT_FILE);
@@ -97,10 +117,11 @@ public class Movement {
         for (int i = 0; i < inputCount; i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
-            int angle = Integer.parseInt(splited[0]);
-            int speed = Integer.parseInt(splited[1]);
-            int durationMovement = Integer.parseInt(splited[2]);
-            movements[i] = new Movement(i, angle, speed, durationMovement);
+            double angle = Double.parseDouble(splited[0]);
+            double speed = Double.parseDouble(splited[1]);
+            double durationMovement = Double.parseDouble(splited[2]);
+            int nodeId = Integer.parseInt(splited[3]);
+            movements[i] = new Movement(i, angle, speed, durationMovement,nodeId);
         }
 
         /**

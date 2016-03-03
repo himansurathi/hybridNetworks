@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Date;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -17,17 +16,28 @@ public class Request {
     double currentAllocatedRequest;
     double maxRequiredRequest;
     double durationRequest;
+    double startTimeRequest;
+	int nodeId;
     Node nodeObject;
-    Date startDate;
-
-    Request(int idVar, int priorityVar, double maxRequiredRequestVar, double durationRequestVar) {
+    
+    /**
+     * 
+     * @param idVar
+     * @param priorityVar
+     * @param maxRequiredRequestVar
+     * @param durationRequestVar
+     * @param startTimeRequestVar
+     * @param nodeIdVar
+     */
+    Request(int idVar, int priorityVar, double maxRequiredRequestVar, double durationRequestVar,double startTimeRequestVar,int nodeIdVar) {
         //   count = countVar;
         id = idVar;
         priority = priorityVar;
         currentAllocatedRequest = 0;
         maxRequiredRequest = maxRequiredRequestVar;
         durationRequest = durationRequestVar;
-
+        startTimeRequest=startTimeRequestVar;
+        nodeId=nodeIdVar;
     }
 
     /**
@@ -73,19 +83,41 @@ public class Request {
     }
 
     /**
+	 * @return the startTimeRequest
+	 */
+	public double getStartTimeRequest() {
+		return startTimeRequest;
+	}
+
+	/**
+	 * @return the nodeId
+	 */
+	public int getNodeId() {
+		return nodeId;
+	}
+
+    /**
      * @return the nodeObject
      */
     public Node getNodeObject() {
         return nodeObject;
     }
 
-    /**
-     * @return the startDate
-     */
-    public Date getStartDate() {
-        return startDate;
-    }
 
+    /**
+     * To convert Request object to a String Object to display all the Requests
+     */
+    @Override
+    public String toString() {
+        return id + " : " + priority + " : " + currentAllocatedRequest + " : " + maxRequiredRequest + " : " + durationRequest + " : " + startTimeRequest+" : "+nodeId;
+    }
+    
+    /**
+     * Read Request File as Input
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static Request[] readInput() throws FileNotFoundException, IOException {
 
         /**
@@ -113,9 +145,11 @@ public class Request {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
             int priority = Integer.parseInt(splited[0]);
-            int maxRequiredRequest = Integer.parseInt(splited[1]);
-            int durationRequest = Integer.parseInt(splited[2]);
-            requests[i] = new Request(i, priority, maxRequiredRequest, durationRequest);
+            double maxRequiredRequest = Double.parseDouble(splited[1]);
+            double durationRequest = Double.parseDouble(splited[2]);
+            double startTimeRequest = Double.parseDouble(splited[3]);
+            int  nodeId = Integer.parseInt(splited[4]);
+            requests[i] = new Request(i, priority, maxRequiredRequest, durationRequest,startTimeRequest,nodeId);
         }
 
         /**
@@ -127,16 +161,7 @@ public class Request {
     }
 
     /**
-     * To convert Request object to a String Object to display all the Requests
-     */
-    @Override
-    public String toString() {
-        return id + " : " + priority + " : " + currentAllocatedRequest + " : " + maxRequiredRequest + " : " + durationRequest + " : " + startDate;
-    }
-
-    /**
-     * Arrange all the Requests on basis of time and store them in a priority
-     * queue
+     * Arrange all the Requests on basis of time and store them in a priority queue
      *
      * @param requests
      * @return
