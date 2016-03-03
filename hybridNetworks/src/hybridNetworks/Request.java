@@ -88,7 +88,6 @@ public class Request {
 
     public static Request[] readInput() throws FileNotFoundException, IOException {
 
-        //Channge the  following file path to absolute path for the input 
         /**
          * Open file input stream for reading
          */
@@ -132,7 +131,7 @@ public class Request {
      */
     @Override
     public String toString() {
-        return id + " : " + priority + " : " + currentAllocatedRequest + " : " + maxRequiredRequest + " : " + durationRequest + " : " + startDate + " : ";
+        return id + " : " + priority + " : " + currentAllocatedRequest + " : " + maxRequiredRequest + " : " + durationRequest + " : " + startDate;
     }
 
     /**
