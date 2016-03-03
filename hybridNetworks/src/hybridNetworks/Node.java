@@ -13,70 +13,77 @@ public class Node {
     double x;
     double y;
     SubscriberStation subscriberObject;
-    
+
     /**
-     * Constructor 
+     * Constructor
+     *
      * @param idVar
      * @param xVar
      * @param yVar
      */
     public Node(int idVar, int xVar, int yVar) {
         id = idVar;
-        x = xVar ;
-        y = yVar ;
+        x = xVar;
+        y = yVar;
     }
-    
 
     /**
-	 * @return the count
-	 */
-	public static int getCount() {
-		return count;
-	}
+     * @return the count
+     */
+    public static int getCount() {
+        return count;
+    }
 
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+    /**
+     * @return the x
+     */
+    public double getX() {
+        return x;
+    }
 
+    /**
+     * @return the y
+     */
+    public double getY() {
+        return y;
+    }
 
-	/**
-	 * @return the x
-	 */
-	public double getX() {
-		return x;
-	}
+    /**
+     * @return the subscriberObject
+     */
+    public SubscriberStation getSubscriberObject() {
+        return subscriberObject;
+    }
 
+    public static Node[] readInput() throws FileNotFoundException, IOException {
 
-	/**
-	 * @return the y
-	 */
-	public double getY() {
-		return y;
-	}
-
-
-	/**
-	 * @return the subscriberObject
-	 */
-	public SubscriberStation getSubscriberObject() {
-		return subscriberObject;
-	}
-
-
-	public static Node[] readInput() throws FileNotFoundException, IOException {
-        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR+Constants.NODE_FILE);
+        /**
+         * Open file input stream for reading
+         */
+        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR + Constants.NODE_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
+        /**
+         * Read the file line by line using br.readline() function Get the
+         * number of inputs from corresponding file at first
+         */
         String strLine;
         Node nodes[];
         int inputCount = 0;
         strLine = br.readLine();
         inputCount = Integer.parseInt(strLine);
-        //System.out.println(inputCount);
+
+        /**
+         *
+         * Assign objects using data from file input
+         */
         nodes = new Node[inputCount];
         for (int i = 0; i < inputCount; i++) {
             strLine = br.readLine();
@@ -86,7 +93,9 @@ public class Node {
             nodes[i] = new Node(i, x, y);
         }
 
-//Close the input stream
+        /**
+         * Close input stream and return array of objects
+         */
         br.close();
 
         return nodes;

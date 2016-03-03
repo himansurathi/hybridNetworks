@@ -20,98 +20,113 @@ public class Request {
     Node nodeObject;
     Date startDate;
 
-    Request(int idVar, int priorityVar, double maxRequiredRequestVar, double durationRequestVar ) {
-     //   count = countVar;
-        id= idVar;
-        priority = priorityVar ;
+    Request(int idVar, int priorityVar, double maxRequiredRequestVar, double durationRequestVar) {
+        //   count = countVar;
+        id = idVar;
+        priority = priorityVar;
         currentAllocatedRequest = 0;
-        maxRequiredRequest = maxRequiredRequestVar ;
-        durationRequest = durationRequestVar ;
-        
+        maxRequiredRequest = maxRequiredRequestVar;
+        durationRequest = durationRequestVar;
+
     }
 
     /**
-	 * @return the count
-	 */
-	public static int getCount() {
-		return count;
-	}
+     * @return the count
+     */
+    public static int getCount() {
+        return count;
+    }
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
 
-	/**
-	 * @return the priority
-	 */
-	public int getPriority() {
-		return priority;
-	}
+    /**
+     * @return the priority
+     */
+    public int getPriority() {
+        return priority;
+    }
 
-	/**
-	 * @return the currentAllocatedRequest
-	 */
-	public double getCurrentAllocatedRequest() {
-		return currentAllocatedRequest;
-	}
+    /**
+     * @return the currentAllocatedRequest
+     */
+    public double getCurrentAllocatedRequest() {
+        return currentAllocatedRequest;
+    }
 
-	/**
-	 * @return the maxRequiredRequest
-	 */
-	public double getMaxRequiredRequest() {
-		return maxRequiredRequest;
-	}
+    /**
+     * @return the maxRequiredRequest
+     */
+    public double getMaxRequiredRequest() {
+        return maxRequiredRequest;
+    }
 
-	/**
-	 * @return the durationRequest
-	 */
-	public double getDurationRequest() {
-		return durationRequest;
-	}
+    /**
+     * @return the durationRequest
+     */
+    public double getDurationRequest() {
+        return durationRequest;
+    }
 
-	/**
-	 * @return the nodeObject
-	 */
-	public Node getNodeObject() {
-		return nodeObject;
-	}
+    /**
+     * @return the nodeObject
+     */
+    public Node getNodeObject() {
+        return nodeObject;
+    }
 
-	/**
-	 * @return the startDate
-	 */
-	public Date getStartDate() {
-		return startDate;
-	}
+    /**
+     * @return the startDate
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public static Request[] readInput() throws FileNotFoundException, IOException {
+    public static Request[] readInput() throws FileNotFoundException, IOException {
+
         //Channge the  following file path to absolute path for the input 
-    	FileInputStream fstream = new FileInputStream(Constants.CURR_DIR+Constants.REQUEST_FILE);
+        /**
+         * Open file input stream for reading
+         */
+        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR + Constants.REQUEST_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
+        /**
+         * Read the file line by line using br.readline() function Get the
+         * number of inputs from corresponding file at first
+         */
         String strLine;
         Request requests[];
         int inputCount = 0;
         strLine = br.readLine();
         inputCount = Integer.parseInt(strLine);
-        //System.out.println(inputCount);
+
+        /**
+         *
+         * Assign objects using data from file input
+         */
         requests = new Request[inputCount];
         for (int i = 0; i < inputCount; i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
             int priority = Integer.parseInt(splited[0]);
-            int maxRequiredRequest = Integer.parseInt( splited[1]);
-            int durationRequest = Integer.parseInt( splited[2]);
-            requests[i] = new Request(i,priority, maxRequiredRequest , durationRequest );
+            int maxRequiredRequest = Integer.parseInt(splited[1]);
+            int durationRequest = Integer.parseInt(splited[2]);
+            requests[i] = new Request(i, priority, maxRequiredRequest, durationRequest);
         }
 
-//Close the input stream
+        /**
+         * Close input stream and return array of objects
+         */
         br.close();
 
         return requests;
     }
+
     /**
      * To convert Request object to a String Object to display all the Requests
      */
@@ -119,8 +134,11 @@ public class Request {
     public String toString() {
         return id + " : " + priority + " : " + currentAllocatedRequest + " : " + maxRequiredRequest + " : " + durationRequest + " : " + startDate + " : ";
     }
+
     /**
-     * Arrange all the Requests on basis of time and store them in a priority queue
+     * Arrange all the Requests on basis of time and store them in a priority
+     * queue
+     *
      * @param requests
      * @return
      */
@@ -132,9 +150,11 @@ public class Request {
         }
         return sortedRequests; //Return the priority Queue.
     }
-    
+
     /**
-     * Arrange all the Requests on basis of priority and store them in a priority queue
+     * Arrange all the Requests on basis of priority and store them in a
+     * priority queue
+     *
      * @param requests
      * @return
      */

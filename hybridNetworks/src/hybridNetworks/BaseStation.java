@@ -18,9 +18,10 @@ public class BaseStation {
     double maxBandwidth;
     double frameSize;
     PriorityQueue<Request> requests;
-    
+
     /**
-     * Constructor 
+     * Constructor
+     *
      * @param idVar
      * @param xVar
      * @param yVar
@@ -34,59 +35,68 @@ public class BaseStation {
         maxBandwidth = maxBandwidthVar;
         frameSize = frameSizeVar;
     }
+
     /**
-	 * @return the count
-	 */
-	public static int getCount() {
-		return count;
-	}
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-	/**
-	 * @return the x
-	 */
-	public double getX() {
-		return x;
-	}
-	/**
-	 * @return the y
-	 */
-	public double getY() {
-		return y;
-	}
-	/**
-	 * @return the maxBandwidth
-	 */
-	public double getMaxBandwidth() {
-		return maxBandwidth;
-	}
-	/**
-	 * @return the frameSize
-	 */
-	public double getFrameSize() {
-		return frameSize;
-	}
-	/**
-	 * @return the requests
-	 */
-	public PriorityQueue<Request> getRequests() {
-		return requests;
-	}
-	/**
-     * Scheduling of all Requests of Base Station on basis of priority of the request
-     * and assign the requests in priority queue.
+     * @return the count
+     */
+    public static int getCount() {
+        return count;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @return the x
+     */
+    public double getX() {
+        return x;
+    }
+
+    /**
+     * @return the y
+     */
+    public double getY() {
+        return y;
+    }
+
+    /**
+     * @return the maxBandwidth
+     */
+    public double getMaxBandwidth() {
+        return maxBandwidth;
+    }
+
+    /**
+     * @return the frameSize
+     */
+    public double getFrameSize() {
+        return frameSize;
+    }
+
+    /**
+     * @return the requests
+     */
+    public PriorityQueue<Request> getRequests() {
+        return requests;
+    }
+
+    /**
+     * Scheduling of all Requests of Base Station on basis of priority of the
+     * request and assign the requests in priority queue.
+     *
      * @param allowedRequests
      * @return
      */
-    public List<Request> scheduling(List<Request> allowedRequests){
-        requests=Request.arrangeRequestsOnBasisOfPriority(allowedRequests);// Sort the Requests on basis of priority
-        List<Request> servedRequests=new ArrayList<Request>();
-        for(Request i: requests){
-            i.currentAllocatedRequest=i.maxRequiredRequest;// Allot the Required Bandwidth to the Current Request
+    public List<Request> scheduling(List<Request> allowedRequests) {
+        requests = Request.arrangeRequestsOnBasisOfPriority(allowedRequests);// Sort the Requests on basis of priority
+        List<Request> servedRequests = new ArrayList<Request>();
+        for (Request i : requests) {
+            i.currentAllocatedRequest = i.maxRequiredRequest;// Allot the Required Bandwidth to the Current Request
             servedRequests.add(i); //Store the Served Requests in the queue 
             requests.remove(i); // Delete the requests already served 
         }
@@ -94,15 +104,23 @@ public class BaseStation {
     }
 
     public static BaseStation[] readInput() throws FileNotFoundException, IOException {
-        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR+Constants.BS_FILE);
+        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR + Constants.BS_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
+        /**
+         * Read the file line by line using br.readline() function Get the
+         * number of inputs from corresponding file at first
+         */
         String strLine;
         BaseStation baseStations[];
         int inputCount = 0;
         strLine = br.readLine();
         inputCount = Integer.parseInt(strLine);
-        //System.out.println(inputCount);
+
+        /**
+         *
+         * Assign objects using data from file input
+         */
         baseStations = new BaseStation[inputCount];
         for (int i = 0; i < inputCount; i++) {
             strLine = br.readLine();
@@ -114,7 +132,9 @@ public class BaseStation {
             baseStations[i] = new BaseStation(i, x, y, maxBandwidth, frameSize);
         }
 
-//Close the input stream
+        /**
+         * Close input stream and return array of objects
+         */
         br.close();
 
         return baseStations;

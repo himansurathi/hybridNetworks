@@ -19,75 +19,77 @@ public class SubscriberStation {
     PriorityQueue<Request> requests;
     BaseStation baseObject;
     static int count;
-    
+
     /**
-     * Constructor 
+     * Constructor
+     *
      * @param idVar
      * @param xVar
      * @param yVar
      * @param maxBandwidthVar
      */
     public SubscriberStation(int idVar, double xVar, double yVar, double maxBandwidthVar) {
-        id = idVar ;
-        x = xVar ;
-        y = yVar ;
-        maxBandwidth = maxBandwidthVar ;
+        id = idVar;
+        x = xVar;
+        y = yVar;
+        maxBandwidth = maxBandwidthVar;
     }
-    
+
     /**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
 
-	/**
-	 * @return the x
-	 */
-	public double getX() {
-		return x;
-	}
+    /**
+     * @return the x
+     */
+    public double getX() {
+        return x;
+    }
 
-	/**
-	 * @return the y
-	 */
-	public double getY() {
-		return y;
-	}
+    /**
+     * @return the y
+     */
+    public double getY() {
+        return y;
+    }
 
-	/**
-	 * @return the maxBandwidth
-	 */
-	public double getMaxBandwidth() {
-		return maxBandwidth;
-	}
+    /**
+     * @return the maxBandwidth
+     */
+    public double getMaxBandwidth() {
+        return maxBandwidth;
+    }
 
-	/**
-	 * @return the requests
-	 */
-	public PriorityQueue<Request> getRequests() {
-		return requests;
-	}
+    /**
+     * @return the requests
+     */
+    public PriorityQueue<Request> getRequests() {
+        return requests;
+    }
 
-	/**
-	 * @return the baseObject
-	 */
-	public BaseStation getBaseObject() {
-		return baseObject;
-	}
+    /**
+     * @return the baseObject
+     */
+    public BaseStation getBaseObject() {
+        return baseObject;
+    }
 
-	/**
-	 * @return the count
-	 */
-	public static int getCount() {
-		return count;
-	}
+    /**
+     * @return the count
+     */
+    public static int getCount() {
+        return count;
+    }
 
-	/**
-     * Scheduling of the requests available at each subscriber stations according to 
-     * maximum allowed requests that can be transferred for each of the individual 
-     * subscriber- base station links.
-     * The functions returns all those allowed requests
+    /**
+     * Scheduling of the requests available at each subscriber stations
+     * according to maximum allowed requests that can be transferred for each of
+     * the individual subscriber- base station links. The functions returns all
+     * those allowed requests
+     *
      * @param nodeRequests
      * @return
      */
@@ -97,7 +99,7 @@ public class SubscriberStation {
         for (Request i : nodeRequests) {
             if ((currentBandwidth + i.maxRequiredRequest) <= maxBandwidth) {
             	//Checking if the request can be transferred from the subscriber station via
-            	// the base-subscriber bandwidth.
+                // the base-subscriber bandwidth.
                 allowedRequest.add(i);
                 currentBandwidth += i.maxRequiredRequest;
             }
@@ -107,15 +109,27 @@ public class SubscriberStation {
     }
 
     public static SubscriberStation[] readInput() throws FileNotFoundException, IOException {
+        /**
+         * Open file input stream for reading
+         */
+
         FileInputStream fstream = new FileInputStream("");
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
+        /**
+         * Read the file line by line using br.readline() function Get the
+         * number of inputs from corresponding file at first
+         */
         String strLine;
         SubscriberStation subscriberStations[];
         int inputCount = 0;
         strLine = br.readLine();
         inputCount = Integer.parseInt(strLine);
-        //System.out.println(inputCount);
+
+        /**
+         *
+         * Assign objects using data from file input
+         */
         subscriberStations = new SubscriberStation[inputCount];
         for (int i = 0; i < inputCount; i++) {
             strLine = br.readLine();
@@ -126,7 +140,9 @@ public class SubscriberStation {
             subscriberStations[i] = new SubscriberStation(i, x, y, maxBandwidth);
         }
 
-//Close the input stream
+        /**
+         * Close input stream and return array of objects
+         */
         br.close();
 
         return subscriberStations;
