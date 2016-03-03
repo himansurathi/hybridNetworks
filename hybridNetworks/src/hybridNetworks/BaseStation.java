@@ -25,8 +25,15 @@ public class BaseStation {
         frameSize = frameSizeVar;
     }
 
-    public Request[] scheduling() {
-        return null;
+    public List<Request> scheduling(List<Request> allowedRequests){
+        requests=Request.arrangeRequestsOnBasisOfPriority(allowedRequests);
+        List<Request> servedRequests=new ArrayList<Request>();
+        for(Request i: requests){
+            i.currentAllocatedRequest=i.maxRequiredRequest;
+            servedRequests.add(i);
+            requests.remove(i);
+        }
+        return servedRequests;
     }
 
     public static BaseStation[] readInput() throws FileNotFoundException, IOException {
