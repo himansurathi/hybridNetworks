@@ -6,19 +6,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
 
 public class BaseStation {
 
-    static int count;
-    int id;
-    double x;
-    double y;
-    double maxBandwidth;
-    double frameSize;
-    double range; 
-    PriorityQueue<Request> requests;
+    private static int count;
+    private int id;
+    private double x;
+    private double y;
+    private double maxBandwidth;
+    private double frameSize;
+    private double range; 
+    private ArrayList<Request> requests;
 
     /**
      * Constructor
@@ -92,7 +90,7 @@ public class BaseStation {
     /**
      * @return the requests
      */
-    public PriorityQueue<Request> getRequests() {
+    public ArrayList<Request> getRequests() {
         return requests;
     }
     
@@ -104,7 +102,6 @@ public class BaseStation {
         return id + " : " +x+" : "+y+ " : " + maxBandwidth+ " : " + frameSize+" : "+range;
     }
 
-
     /**
      * Scheduling of all Requests of Base Station on basis of priority of the
      * request and assign the requests in priority queue.
@@ -112,13 +109,12 @@ public class BaseStation {
      * @param allowedRequests
      * @return
      */
-    public List<Request> scheduling(List<Request> allowedRequests) {
-        requests = Request.arrangeRequestsOnBasisOfPriority(allowedRequests);// Sort the Requests on basis of priority
-        List<Request> servedRequests = new ArrayList<Request>();
+    public ArrayList<Request> scheduling(ArrayList<Request> allowedRequests) {
+    	requests = Request.arrangeRequestsOnBasisOfPriority(allowedRequests);// Sort the Requests on basis of priority
+    	ArrayList<Request> servedRequests = new ArrayList<Request>();
         for (Request i : requests) {
-            i.currentAllocatedRequest = i.maxRequiredRequest;// Allot the Required Bandwidth to the Current Request
+            i.setCurrentAllocatedRequest(i.getMaxRequiredRequest());// Allot the Required Bandwidth to the Current Request
             servedRequests.add(i); //Store the Served Requests in the queue 
-            requests.remove(i); // Delete the requests already served 
         }
         return servedRequests; // Return the served Requests
     }
@@ -129,7 +125,7 @@ public class BaseStation {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static BaseStation[] readInput() throws FileNotFoundException, IOException {
+    public static ArrayList<BaseStation> readInput() throws FileNotFoundException, IOException {
         FileInputStream fstream = new FileInputStream(Constants.CURR_DIR + Constants.BS_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
@@ -138,17 +134,16 @@ public class BaseStation {
          * number of inputs from corresponding file at first
          */
         String strLine;
-        BaseStation baseStations[];
-        int inputCount = 0;
+        ArrayList<BaseStation> baseStations;
         strLine = br.readLine();
-        inputCount = Integer.parseInt(strLine);
+        count= Integer.parseInt(strLine);
 
         /**
          *
          * Assign objects using data from file input
          */
-        baseStations = new BaseStation[inputCount];
-        for (int i = 0; i < inputCount; i++) {
+        baseStations = new ArrayList<BaseStation>();
+        for (int i = 0; i < getCount(); i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
             double x = Double.parseDouble(splited[0]);
@@ -156,7 +151,7 @@ public class BaseStation {
             double maxBandwidth = Double.parseDouble(splited[2]);
             double frameSize = Double.parseDouble(splited[3]);
             double range = Double.parseDouble(splited[4]);
-            baseStations[i] = new BaseStation(i, x, y, maxBandwidth, frameSize,range);
+            baseStations.add(new BaseStation(i, x, y, maxBandwidth, frameSize,range));
         }
 
         /**
@@ -165,7 +160,23 @@ public class BaseStation {
         br.close();
 
         return baseStations;
-
     }
+    
+    /**
+	 * Display Base Station File
+     * @param title
+     * @param format
+     * @param bases
+     */
+	public static void displayBaseStation(String title,String format,ArrayList<BaseStation> bases) {
+		System.out.println(title);
+		int size = bases.size();
+		System.out.println(size);
+		System.out.println(format);
+		for (BaseStation i : bases) {
+			System.out.println(i);
+		}
+	}
+
 
 }

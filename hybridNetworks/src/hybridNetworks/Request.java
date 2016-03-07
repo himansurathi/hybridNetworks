@@ -5,22 +5,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class Request {
 
-    static int count;
-    int id;
-    int priority;
-    double currentAllocatedRequest;
-    double maxRequiredRequest;
-    double durationRequest;
-    double startTimeRequest;
-	int nodeId;
-    Node nodeObject;
+    private static int count;
+    private int id;
+    private int priority;
+    private double currentAllocatedRequest;
+    private double maxRequiredRequest;
+    private double durationRequest;
+    private double startTimeRequest;
+    private int nodeId;
+    private Node nodeObject;
     
-    /**
+
+	/**
      * 
      * @param idVar
      * @param priorityVar
@@ -29,7 +30,8 @@ public class Request {
      * @param startTimeRequestVar
      * @param nodeIdVar
      */
-    Request(int idVar, int priorityVar, double maxRequiredRequestVar, double durationRequestVar,double startTimeRequestVar,int nodeIdVar) {
+    Request(int idVar, int priorityVar, double maxRequiredRequestVar,
+    		double durationRequestVar,double startTimeRequestVar,int nodeIdVar) {
         //   count = countVar;
         id = idVar;
         priority = priorityVar;
@@ -104,7 +106,29 @@ public class Request {
     }
 
 
+
     /**
+	 * @param currentAllocatedRequest the currentAllocatedRequest to set
+	 */
+	public void setCurrentAllocatedRequest(double currentAllocatedRequest) {
+		this.currentAllocatedRequest = currentAllocatedRequest;
+	}
+	
+	/**
+	 * @param nodeId the nodeId to set
+	 */
+	public void setNodeId(int nodeId) {
+		this.nodeId = nodeId;
+	}
+
+	/**
+	 * @param nodeObject the nodeObject to set
+	 */
+	public void setNodeObject(Node nodeObject) {
+		this.nodeObject = nodeObject;
+	}
+
+	/**
      * To convert Request object to a String Object to display all the Requests
      */
     @Override
@@ -118,7 +142,7 @@ public class Request {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static Request[] readInput() throws FileNotFoundException, IOException {
+    public static ArrayList<Request> readInput() throws FileNotFoundException, IOException {
 
         /**
          * Open file input stream for reading
@@ -131,17 +155,16 @@ public class Request {
          * number of inputs from corresponding file at first
          */
         String strLine;
-        Request requests[];
-        int inputCount = 0;
+        ArrayList<Request> requests;
         strLine = br.readLine();
-        inputCount = Integer.parseInt(strLine);
+        count = Integer.parseInt(strLine);
 
         /**
          *
          * Assign objects using data from file input
          */
-        requests = new Request[inputCount];
-        for (int i = 0; i < inputCount; i++) {
+        requests = new ArrayList<Request>();
+        for (int i = 0; i < getCount(); i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
             int priority = Integer.parseInt(splited[0]);
@@ -149,7 +172,7 @@ public class Request {
             double durationRequest = Double.parseDouble(splited[2]);
             double startTimeRequest = Double.parseDouble(splited[3]);
             int  nodeId = Integer.parseInt(splited[4]);
-            requests[i] = new Request(i, priority, maxRequiredRequest, durationRequest,startTimeRequest,nodeId);
+            requests.add(new Request(i, priority, maxRequiredRequest, durationRequest,startTimeRequest,nodeId));
         }
 
         /**
@@ -161,18 +184,39 @@ public class Request {
     }
 
     /**
+	 * Display Request File
+     * @param title
+     * @param format
+     * @param requests
+     */
+	public static void displayRequest(String title,String format,ArrayList<Request> requests) {
+		System.out.println(title);
+		int out = requests.size();
+		System.out.println(out);
+		System.out.println(format);
+		for (Request i : requests) {
+			System.out.println(i);
+		}
+	}
+
+	/**
      * Arrange all the Requests on basis of time and store them in a priority queue
      *
      * @param requests
      * @return
      */
-    public static PriorityQueue<Request> arrangeRequestsOnBasisOfTime(List<Request> requests) {
-        TimeComparator timeComparator = new TimeComparator(); //Creating a user defined comparator for time
+    public static ArrayList<Request> arrangeRequestsOnBasisOfTime(ArrayList<Request> requests) {
+        RequestTimeComparator timeComparator = new RequestTimeComparator(); //Creating a user defined comparator for time
         PriorityQueue<Request> sortedRequests = new PriorityQueue<Request>(count, timeComparator); // Store the requests in Priority Queue on basis of timeComparator defined.
         for (Request i : requests) {
             sortedRequests.add(i);
         }
-        return sortedRequests; //Return the priority Queue.
+        ArrayList<Request> requestList=new ArrayList<Request>();
+        while(!sortedRequests.isEmpty()){
+        	Request current=sortedRequests.poll();
+        	requestList.add(current);
+        }
+        return requestList; //Return the priority Queue.
     }
 
     /**
@@ -182,13 +226,27 @@ public class Request {
      * @param requests
      * @return
      */
-    public static PriorityQueue<Request> arrangeRequestsOnBasisOfPriority(List<Request> requests) {
-        PriorityComparator priorityComparator = new PriorityComparator();//Creating a user defined comparator for priority
-        PriorityQueue<Request> sortedRequests = new PriorityQueue<Request>(count, priorityComparator); // Store the requests in Priority Queue on basis of priorityComparator defined.
+    public static ArrayList<Request> arrangeRequestsOnBasisOfPriority(ArrayList<Request> requests) {
+        RequestPriorityComparator priorityComparator = new RequestPriorityComparator();//Creating a user defined comparator for priority
+        PriorityQueue<Request> sortedRequests = new PriorityQueue<Request>(getCount()+4, priorityComparator); // Store the requests in Priority Queue on basis of priorityComparator defined.
         for (Request i : requests) {
             sortedRequests.add(i);
         }
-        return sortedRequests; // Returns the Priority Queue
+        ArrayList<Request> requestList=new ArrayList<Request>();
+        while(!sortedRequests.isEmpty()){
+        	Request current=sortedRequests.poll();
+        	requestList.add(current);
+        }
+        return requestList; // Returns the Priority Queue
     }
 
+	public String generateLog() {
+		// TODO Auto-generated method stub
+		String s=getId()+" \t\t "+getPriority()+" \t\t\t "+getCurrentAllocatedRequest()
+		+"   \t\t    "+getNodeId()+"   \t\t "+getNodeObject().getSubscriberId()+"   \t\t\t "
+		+getNodeObject().getSubscriberObject().getBaseId();
+		
+		return s;
+	}
 }
+

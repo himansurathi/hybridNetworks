@@ -11,5 +11,5 @@ public class Constants {
 	static final String MOVEMENT_FILE="/input/movements.txt";//Movement Input File Name
 	static final String OUTPUT_DIR="/output"; // Output Directory
 	static final String CURR_DIR = System.getProperty("user.dir"); // Current Directory of application
-    	
+	static final boolean DEBUG = false;
 }

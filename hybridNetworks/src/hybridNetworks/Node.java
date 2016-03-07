@@ -5,16 +5,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class Node {
 
-    static int count;
-    int id;
-    double initialX;
-    double initialY;
-    double currentX;
-    double currentY;
-    int subscriberId;
+    private static int count;
+    private int id;
+    private double initialX;
+    private double initialY;
+    private double currentX;
+    private double currentY;
+    private int subscriberId;
     SubscriberStation subscriberObject;
 
     /**
@@ -89,6 +90,20 @@ public class Node {
     }
     
     /**
+	 * @param subscriberId the subscriberId to set
+	 */
+	public void setSubscriberId(int subscriberId) {
+		this.subscriberId = subscriberId;
+	}
+
+	/**
+	 * @param subscriberObject the subscriberObject to set
+	 */
+	public void setSubscriberObject(SubscriberStation subscriberObject) {
+		this.subscriberObject = subscriberObject;
+	}
+
+	/**
      * To convert Node object to a String Object to display all the Requests
      */
     @Override
@@ -102,7 +117,7 @@ public class Node {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static Node[] readInput() throws FileNotFoundException, IOException {
+    public static ArrayList<Node> readInput() throws FileNotFoundException, IOException {
 
         /**
          * Open file input stream for reading
@@ -115,23 +130,22 @@ public class Node {
          * number of inputs from corresponding file at first
          */
         String strLine;
-        Node nodes[];
-        int inputCount = 0;
+        ArrayList<Node> nodes;
         strLine = br.readLine();
-        inputCount = Integer.parseInt(strLine);
+        count = Integer.parseInt(strLine);
 
         /**
          *
          * Assign objects using data from file input
          */
-        nodes = new Node[inputCount];
-        for (int i = 0; i < inputCount; i++) {
+        nodes = new ArrayList<Node>();
+        for (int i = 0; i < getCount(); i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
             double x = Double.parseDouble(splited[0]);
             double y = Double.parseDouble(splited[1]);
             int subscriberId = Integer.parseInt(splited[2]);
-            nodes[i] = new Node(i, x, y,subscriberId);
+            nodes.add(new Node(i, x, y,subscriberId));
         }
 
         /**
@@ -140,6 +154,30 @@ public class Node {
         br.close();
 
         return nodes;
-
     }
+
+    /**
+	 * Display Nodes File
+     * @param title
+     * @param format
+     * @param nodes
+     */
+	public static void displayNodes(String title,String format,ArrayList<Node> nodes) {
+		System.out.println(title);
+		int size = nodes.size();
+		System.out.println(size);
+		System.out.println(format);
+		for (Node i : nodes) {
+			System.out.println(i);
+		}
+	}
+	
+
+	public double calcDistance(SubscriberStation s) {
+		// TODO Auto-generated method stub
+		double differenceX=getCurrentX()-s.getX();
+		double differenceY=getCurrentY()-s.getY();
+		double distance=Math.sqrt(Math.pow(differenceX, 2)+Math.pow(differenceY, 2));
+		return distance;
+	}
 }

@@ -1,8 +1,6 @@
 package hybridNetworks;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
 import hybridNetworks.Request;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -12,15 +10,15 @@ import java.io.InputStreamReader;
 
 public class SubscriberStation {
 
-    static int count;
-    int id;
-    double x;
-    double y;
-    double maxBandwidth;
-    double range;
-    int baseId;
-    BaseStation baseObject;
-    PriorityQueue<Request> requests;
+    public static int count;
+    private int id;
+    private double x;
+    private double y;
+    private double maxBandwidth;
+    private double range;
+    private int baseId;
+    private BaseStation baseObject;
+    ArrayList<Request> requests;
     
     /**
      * Constructor
@@ -97,9 +95,23 @@ public class SubscriberStation {
     }
 
     /**
+	 * @param baseId the baseId to set
+	 */
+	public void setBaseId(int baseId) {
+		this.baseId = baseId;
+	}
+
+	/**
+	 * @param baseObject the baseObject to set
+	 */
+	public void setBaseObject(BaseStation baseObject) {
+		this.baseObject = baseObject;
+	}
+
+	/**
      * @return the requests
      */
-    public PriorityQueue<Request> getRequests() {
+    public ArrayList<Request> getRequests() {
         return requests;
     }
 
@@ -120,15 +132,16 @@ public class SubscriberStation {
      * @param nodeRequests
      * @return
      */
-    public List<Request> scheduling(List<Request> nodeRequests) {
+    public ArrayList<Request> scheduling(ArrayList<Request> nodeRequests) {
         int currentBandwidth = 0;
-        List<Request> allowedRequest = new ArrayList<Request>();
-        for (Request i : nodeRequests) {
-            if ((currentBandwidth + i.maxRequiredRequest) <= maxBandwidth) {
+        requests = Request.arrangeRequestsOnBasisOfPriority(nodeRequests);// Sort the Requests on basis of priority
+        ArrayList<Request> allowedRequest = new ArrayList<Request>();
+        for (Request i : requests) {
+            if ((currentBandwidth + i.getMaxRequiredRequest()) <= maxBandwidth) {
             	//Checking if the request can be transferred from the subscriber station via
                 // the base-subscriber bandwidth.
                 allowedRequest.add(i);
-                currentBandwidth += i.maxRequiredRequest;
+                currentBandwidth += i.getMaxRequiredRequest();
             }
         }
         return allowedRequest; // Returns List of Allowed Requests
@@ -141,12 +154,12 @@ public class SubscriberStation {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static SubscriberStation[] readInput() throws FileNotFoundException, IOException {
+    public static ArrayList<SubscriberStation> readInput() throws FileNotFoundException, IOException {
         /**
          * Open file input stream for reading
          */
 
-        FileInputStream fstream = new FileInputStream("");
+        FileInputStream fstream = new FileInputStream(Constants.CURR_DIR+Constants.SS_FILE);
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
         /**
@@ -154,17 +167,16 @@ public class SubscriberStation {
          * number of inputs from corresponding file at first
          */
         String strLine;
-        SubscriberStation subscriberStations[];
-        int inputCount = 0;
+        ArrayList<SubscriberStation> subscriberStations;
         strLine = br.readLine();
-        inputCount = Integer.parseInt(strLine);
+        count = Integer.parseInt(strLine);
 
         /**
          *
          * Assign objects using data from file input
          */
-        subscriberStations = new SubscriberStation[inputCount];
-        for (int i = 0; i < inputCount; i++) {
+        subscriberStations = new ArrayList<SubscriberStation>();
+        for (int i = 0; i < getCount(); i++) {
             strLine = br.readLine();
             String[] splited = strLine.split("\\s+");
             double x = Double.parseDouble(splited[0]);
@@ -172,7 +184,7 @@ public class SubscriberStation {
             double maxBandwidth = Double.parseDouble(splited[2]);
             double range = Double.parseDouble(splited[3]);
             int baseId = Integer.parseInt(splited[4]);
-            subscriberStations[i] = new SubscriberStation(i, x, y, maxBandwidth,range,baseId);
+            subscriberStations.add(new SubscriberStation(i, x, y, maxBandwidth,range,baseId));
         }
 
         /**
@@ -183,5 +195,21 @@ public class SubscriberStation {
         return subscriberStations;
 
     }
+
+    /**
+	 * Display Subscriber Station File
+     * @param title
+     * @param format
+     * @param subscribers
+     */
+	public static void displaySubscriberStation(String title,String format,ArrayList<SubscriberStation> subscribers) {
+		System.out.println(title);
+		int size = subscribers.size();
+		System.out.println(size);
+		System.out.println(format);
+		for (SubscriberStation i : subscribers) {
+			System.out.println(i);
+		}
+	}
 
 }
