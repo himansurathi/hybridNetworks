@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class SubscriberStation {
+public class SubscriberStation implements Station{
 
     public static int count;
     private int id;

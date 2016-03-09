@@ -7,6 +7,7 @@ public class HybridNetwork {
 
 	private static ArrayList<Request> requests;
 	private static ArrayList<Node> nodes;
+        private static ArrayList<Station> stations ;
 	private static ArrayList<SubscriberStation> subscribers;
 	private static ArrayList<BaseStation> bases;
 	private static ArrayList<Movement> movements;
@@ -77,11 +78,14 @@ public class HybridNetwork {
 //		PriorityQueue<Movement> arrangedMovement=Movement.arrangeMovementOnBasisOfTime(movements);
 		
 		subscribers=allotSubscriberToBaseStation(subscribers,bases);
+                
 		
 		/**
-		 * Log File Format
+		 * Combining base and subscriber stations to a common arraylist
 		 */
-		
+                stations = new ArrayList<Station>();
+		stations.addAll(bases);
+                stations.addAll(subscribers);
 		
 		/**
 		 * We assume that the simulation is running for
@@ -105,7 +109,7 @@ public class HybridNetwork {
 			 * 1. Assign all nodes to particular stations by checking
 			 * the nearest possible station subscriber station
 			 */
-			nodes=calculateDistance(nodes,subscribers); 
+			nodes=calculateDistance(nodes,stations); 
 			
 			if(Constants.DEBUG){
 				title="\n\nNode Assignment";
@@ -191,10 +195,10 @@ public class HybridNetwork {
 		}
 		return requestlist;
 	}
-	private  static ArrayList<Node> calculateDistance(ArrayList<Node> nodeList,ArrayList<SubscriberStation> stationList){
+	private  static ArrayList<Node> calculateDistance(ArrayList<Node> nodeList,ArrayList<Station> stationList){
 		for(Node n:nodeList){
 			int flag=0;
-			for(SubscriberStation station:stationList){
+			for(Station station:stationList){
 				
 				if(n.calcDistance(station)<=station.getRange()){
 					n.setSubscriberObject(station);

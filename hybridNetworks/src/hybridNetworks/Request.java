@@ -244,7 +244,7 @@ public class Request {
 		// TODO Auto-generated method stub
 		String s=getId()+" \t\t "+getPriority()+" \t\t\t "+getCurrentAllocatedRequest()
 		+"   \t\t    "+getNodeId()+"   \t\t "+getNodeObject().getSubscriberId()+"   \t\t\t "
-		+getNodeObject().getSubscriberObject().getBaseId();
+		+getNodeObject().getStationObject().getBaseId();
 		
 		return s;
 	}

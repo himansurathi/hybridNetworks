@@ -16,7 +16,7 @@ public class Node {
     private double currentX;
     private double currentY;
     private int subscriberId;
-    SubscriberStation subscriberObject;
+    Station stationObject;
 
     /**
      * 
@@ -85,8 +85,8 @@ public class Node {
 	/**
      * @return the subscriberObject
      */
-    public SubscriberStation getSubscriberObject() {
-        return subscriberObject;
+    public Station getStationObject() {
+        return stationObject;
     }
     
     /**
@@ -99,8 +99,8 @@ public class Node {
 	/**
 	 * @param subscriberObject the subscriberObject to set
 	 */
-	public void setSubscriberObject(SubscriberStation subscriberObject) {
-		this.subscriberObject = subscriberObject;
+	public void setSubscriberObject(Station stationObject) {
+		this.stationObject = stationObject;
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class Node {
 	}
 	
 
-	public double calcDistance(SubscriberStation s) {
+	public double calcDistance(Station s) {
 		// TODO Auto-generated method stub
 		double differenceX=getCurrentX()-s.getX();
 		double differenceY=getCurrentY()-s.getY();

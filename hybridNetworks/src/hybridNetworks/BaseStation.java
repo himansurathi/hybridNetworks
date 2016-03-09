@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class BaseStation {
+public class BaseStation implements Station {
 
     private static int count;
     private int id;
@@ -177,6 +177,11 @@ public class BaseStation {
 			System.out.println(i);
 		}
 	}
+        
+        public int getBaseId()
+        {
+            return -1;
+        }
 
 
 }

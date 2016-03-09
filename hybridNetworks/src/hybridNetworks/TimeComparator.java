@@ -8,9 +8,9 @@ public class TimeComparator implements Comparator<Request> {
 	
 	@Override
 	public int compare(Request r1,Request r2){
-		if(r1.startTimeRequest<r2.startTimeRequest)
+		if(r1.getStartTimeRequest()<r2.getStartTimeRequest())
 			return -1;
-		else if(r1.startTimeRequest>r2.startTimeRequest)
+		else if(r1.getStartTimeRequest()>r2.getStartTimeRequest())
 			return 1;
 		else 
 			return 0;

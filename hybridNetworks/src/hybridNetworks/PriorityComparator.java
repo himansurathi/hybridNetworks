@@ -8,6 +8,6 @@ public class PriorityComparator implements Comparator<Request>{
 	 */
 	@Override
 	public int compare(Request r1,Request r2){
-		return r2.priority-r1.priority;
+		return r2.getPriority()-r1.getPriority();
 	}
 }
