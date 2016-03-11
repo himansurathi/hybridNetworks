@@ -138,16 +138,6 @@ public class HybridNetwork {
 				ArrayList<Request> requestAllowedAtTime=totalRequestSubscriberStation(requestAtTime,subscribers,base.getId());
 				
                                 
-                                for(Request request:requests){
-                                    if(request.getNodeObject().getStationObject().getBaseId() == -1)
-                                    {
-                                        if(request.getNodeObject().getStationObject() == base)
-                                        {
-                                            requestAllowedAtTime.add(request);
-                                        }
-                                    }
-                                }
-                                
                                 
                                 if(Constants.DEBUG){
 					title="\n\nSubscriber Station Allowed Requests";
@@ -155,6 +145,25 @@ public class HybridNetwork {
 					Request.displayRequest(title,format,requestAllowedAtTime);
 				}
 				
+                                /**
+                                 * Assigning requests under the base stations connected directly to node 
+                                 */
+                                
+                                System.out.println("\n \n Requests from nodes connected to  base station in any way served");
+                                       System.out.println("Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId");
+                                for(Request request:requests){
+                                    if(request.getNodeObject().getStationObject().getBaseId() == -1)
+                                    {
+                                        if(request.getNodeObject().getStationObject() == base)
+                                        {
+                                            requestAllowedAtTime.add(request);
+                                     
+                                            System.out.println(request);
+                                        }
+                                    }
+                                }
+                                
+                                
 				ArrayList<Request> requestServedAtTime=base.scheduling(requestAllowedAtTime);
 				if(Constants.DEBUG){
 					title="\n\nBase Station Served Requests";
