@@ -136,7 +136,20 @@ public class HybridNetwork {
 			ArrayList<Request> totalRequestAtTime=new ArrayList<Request>();
 			for(BaseStation base:bases){
 				ArrayList<Request> requestAllowedAtTime=totalRequestSubscriberStation(requestAtTime,subscribers,base.getId());
-				if(Constants.DEBUG){
+				
+                                
+                                for(Request request:requests){
+                                    if(request.getNodeObject().getStationObject().getBaseId() == -1)
+                                    {
+                                        if(request.getNodeObject().getStationObject() == base)
+                                        {
+                                            requestAllowedAtTime.add(request);
+                                        }
+                                    }
+                                }
+                                
+                                
+                                if(Constants.DEBUG){
 					title="\n\nSubscriber Station Allowed Requests";
 					format="Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId";
 					Request.displayRequest(title,format,requestAllowedAtTime);
