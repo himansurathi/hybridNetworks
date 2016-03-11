@@ -152,7 +152,7 @@ public class HybridNetwork {
                                 System.out.println("\n \n Requests from nodes connected to  base station in any way served");
                                        System.out.println("Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId");
                                 for(Request request:requests){
-                                    if(request.getNodeObject().getStationObject().getBaseId() == -1)
+                                    if(request.getNodeObject().getStationObject() instanceof BaseStation)
                                     {
                                         if(request.getNodeObject().getStationObject() == base)
                                         {
@@ -224,7 +224,13 @@ public class HybridNetwork {
 				
 				if(n.calcDistance(station)<=station.getRange()){
 					n.setSubscriberObject(station);
-					n.setSubscriberId(station.getId());
+                                        if (station instanceof SubscriberStation)
+                                        {
+					n.setSubscriberId(station.getId());}
+                                        else
+                                        {
+                                            n.setSubscriberId(-1);
+                                        }
 					flag=1;
 					break;
 				}

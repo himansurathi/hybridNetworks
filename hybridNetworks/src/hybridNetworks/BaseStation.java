@@ -180,7 +180,7 @@ public class BaseStation implements Station {
         
         public int getBaseId()
         {
-            return -1;
+            return id;
         }
 
 
