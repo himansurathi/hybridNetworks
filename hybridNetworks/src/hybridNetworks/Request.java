@@ -13,14 +13,31 @@ public class Request {
     private static int count;
     private int id;
     private int priority;
+    private int age;
     private double currentAllocatedRequest;
     private double maxRequiredRequest;
     private double durationRequest;
     private double startTimeRequest;
     private int nodeId;
+    private double weight;
     private Node nodeObject;
-    
 
+    private void calculateWeight(){
+    	/**
+    	 * Calculate the final measurement of priority of a request
+    	 * alpha*age+(1-alpha)*deadline
+    	 */
+  
+    }
+    
+    public static ArrayList<Request> sortByWeight(ArrayList<Request> requests){
+    	/**
+    	 * Sort all the requests available according to  weights
+    	 */
+    	
+    	return null;
+    }
+       
 	/**
      * 
      * @param idVar
@@ -40,6 +57,8 @@ public class Request {
         durationRequest = durationRequestVar;
         startTimeRequest=startTimeRequestVar;
         nodeId=nodeIdVar;
+        age=0;
+        weight=priority;
     }
 
     /**

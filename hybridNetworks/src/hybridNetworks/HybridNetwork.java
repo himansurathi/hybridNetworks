@@ -1,5 +1,6 @@
 package hybridNetworks;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -7,12 +8,26 @@ public class HybridNetwork {
 
 	private static ArrayList<Request> requests;
 	private static ArrayList<Node> nodes;
-        private static ArrayList<Station> stations ;
+    private static ArrayList<Station> stations ;
 	private static ArrayList<SubscriberStation> subscribers;
 	private static ArrayList<BaseStation> bases;
 	private static ArrayList<Movement> movements;
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
+		Constants.REFRESH_RUN=true;
+
+		for(int i=Constants.INIT_TEST_NO;i<Constants.INIT_TEST_NO+Constants.NUMBER_OF_TESTCASES;i++){
+			System.out.println("Generating"+ i+"th Testcase");
+			Testcase.generateTestcase(i);
+			System.out.println("Processing"+ i+"th Testcase");
+			wimax2Wifi();
+			Constants.REFRESH_RUN=false;
+		}
+	
+	}
+	
+	
+	public static void wimax2Wifi() throws FileNotFoundException, IOException {
 
 		/*
 		 * Read Input from all files in input directory and assign the values to
@@ -136,10 +151,8 @@ public class HybridNetwork {
 			ArrayList<Request> totalRequestAtTime=new ArrayList<Request>();
 			for(BaseStation base:bases){
 				ArrayList<Request> requestAllowedAtTime=totalRequestSubscriberStation(requestAtTime,subscribers,base.getId());
-				
-                                
-                                
-                                if(Constants.DEBUG){
+		                
+                if(Constants.DEBUG){
 					title="\n\nSubscriber Station Allowed Requests";
 					format="Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId";
 					Request.displayRequest(title,format,requestAllowedAtTime);
@@ -163,8 +176,7 @@ public class HybridNetwork {
                                     }
                                 }
                                 
-                                
-				ArrayList<Request> requestServedAtTime=base.scheduling(requestAllowedAtTime);
+                ArrayList<Request> requestServedAtTime=base.scheduling(requestAllowedAtTime);
 				if(Constants.DEBUG){
 					title="\n\nBase Station Served Requests";
 					format="Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId";
@@ -172,6 +184,8 @@ public class HybridNetwork {
 				}
 				totalRequestAtTime.addAll(requestServedAtTime);
 			}
+
+			Statistics.findResult(totalRequestAtTime,requestAtTime);
 			
 			System.out.println("\n********************************\t\t Log Format \t\t************************************\n");
 			System.out.println("time \t requestId \t requestPriority \t requestAllocated \t nodeid \t subscriberid \t\t basestationid\n");
@@ -179,6 +193,7 @@ public class HybridNetwork {
 			System.out.println(i+" \t\t "+log.generateLog());
 
 		}
+
 	}
 
 	private static ArrayList<SubscriberStation> allotSubscriberToBaseStation(

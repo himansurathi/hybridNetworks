@@ -4,13 +4,34 @@ public class Constants {
 	static final double SUBSCRIBER_BANDWIDTH=Double.MAX_VALUE; //Bandwidth of Subscriber Station
 	static final double BASE_BANDWIDTH=Double.MAX_VALUE;//Bandwidth of Base Station
 	static final double SIMULATION_TIME=1; //Simulation Running Time
-	static final int TEST_NO=4; //Simulation Test Number
-	static final String BS_FILE="/input/testcase"+TEST_NO+"/baseStations.txt"; //Base Station Input File
-	static final String SS_FILE="/input/testcase"+TEST_NO+"/subscriberStations.txt"; //Subscriber Station Input File
-	static final String NODE_FILE="/input/testcase"+TEST_NO+"/nodes.txt"; //Node Input File Name
-	static final String REQUEST_FILE="/input/testcase"+TEST_NO+"/requests.txt";//Request Input File Name
-	static final String MOVEMENT_FILE="/input/testcase"+TEST_NO+"/movements.txt";//Movement Input File Name
+	static final int NUMBER_OF_TESTCASES=100; //Number of Testcases
+	static final int INIT_TEST_NO=6; //Initial TestCase Number
+	static final String INPUT_DIR="/input"; // Input Directory
+	static final String INPUT_SUBDIR="/testcase";
 	static final String OUTPUT_DIR="/output"; // Output Directory
 	static final String CURR_DIR = System.getProperty("user.dir"); // Current Directory of application
-	static final boolean DEBUG = true;
+	static final String BS_NAME="/baseStations.txt";
+	static final String SS_NAME="/subscriberStations.txt";
+	static final String NODES_NAME="/nodes.txt";
+	static final String REQUEST_NAME="/requests.txt";
+	static final String MOVEMENT_NAME="/movements.txt";
+	static String BS_FILE;
+	static String SS_FILE;
+	static String NODE_FILE;
+	static String REQUEST_FILE;
+	static String MOVEMENT_FILE;
+	static final String[] DIR_NAME={"Total","RequestClass","AllocationClass","Plots"};
+    static final boolean DEBUG = true;
+	static boolean REFRESH_RUN=true;
+	static final String DELIMITER=" ";
+	public static final int FRAME_SIMULATION_TIME = 5;
+	public static final int SIMULATION_GAP = 5;
+	
+	public static void setFile(int TEST_NO){
+		BS_FILE=INPUT_DIR+INPUT_SUBDIR+TEST_NO+BS_NAME; //Base Station Input File
+		SS_FILE=INPUT_DIR+INPUT_SUBDIR+TEST_NO+SS_NAME; //Subscriber Station Input File
+		NODE_FILE=INPUT_DIR+INPUT_SUBDIR+TEST_NO+NODES_NAME; //Node Input File Name
+		REQUEST_FILE=INPUT_DIR+INPUT_SUBDIR+TEST_NO+REQUEST_NAME;//Request Input File Name
+		MOVEMENT_FILE=INPUT_DIR+INPUT_SUBDIR+TEST_NO+MOVEMENT_NAME;//Movement Input File Name	
+	}
 }
