@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
 
 public class BaseStation implements Station {
 
@@ -19,28 +19,49 @@ public class BaseStation implements Station {
     private double range; 
     private ArrayList<Request> requests;
 
-    private ArrayList<Request> getServableRequests(ArrayList<Request> requests,int i){
-    	/**
-    	 * If the request has timed out or not AND if the requests has already been served
-    	 */
-    	return null;
-    }
     
-    public void schedulingWithWeight(ArrayList<Request> requests){
+    
+    public ArrayList<Request> schedulingWithWeight(ArrayList<Request> requests,double time){
     	/**
-    	 * loop for simulation times:
+    	 *  loop for simulation times:
     	 *  1. Call the function to find possible servable requests
     	 *  2. Seperate requests according to their classes
     	 *  3. Sort each of the class requests
     	 *  4. Pass the sorted Requests to Frame Class
     	 */
-    	for(int i=0;i<Constants.FRAME_SIMULATION_TIME;i+=Constants.SIMULATION_GAP){
-        	requests=getServableRequests(requests,i);
-    		
-    	}
+    	ArrayList<Request> UGC=new ArrayList<Request>();
+    	ArrayList<Request> RTP=new ArrayList<Request>();
+    	ArrayList<Request> NRTP=new ArrayList<Request>();
+    	ArrayList<Request> BE=new ArrayList<Request>();
+    	
+        	
+    	UGC=seperateRequest(requests,4);
+    	RTP=seperateRequest(requests,3);
+    	NRTP=seperateRequest(requests,2);
+    	BE=seperateRequest(requests,1);
+        	
+    	UGC = Request.arrangeRequestsOnBasisOfWeight(UGC, time);
+    	RTP = Request.arrangeRequestsOnBasisOfWeight(RTP, time);
+    	NRTP = Request.arrangeRequestsOnBasisOfWeight(NRTP, time);
+    	BE = Request.arrangeRequestsOnBasisOfWeight(BE, time);
+        	
+        	Frame frame=new Frame(time,this);
+        	frame.initializeFrame(UGC, RTP, NRTP, BE);
+        	System.out.println(frame.generateLogFrame());	
+        	return frame.getRequests();    
     }
     
-    /**
+    private ArrayList<Request> seperateRequest(ArrayList<Request> relevantRequests, int i) {
+		ArrayList<Request> classRequest=new ArrayList<Request>();
+
+    	for(Request r: relevantRequests){
+    		if(r.getPriority()==i)
+    			classRequest.add(r);
+    	}
+		return classRequest;
+	}
+
+	/**
      * Constructor
 	 *
      * @param idVar
@@ -200,7 +221,7 @@ public class BaseStation implements Station {
 		}
 	}
         
-        public int getBaseId()
+      public int getBaseId()
         {
             return id;
         }

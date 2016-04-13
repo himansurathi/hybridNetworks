@@ -137,16 +137,42 @@ public class SubscriberStation implements Station{
         requests = Request.arrangeRequestsOnBasisOfPriority(nodeRequests);// Sort the Requests on basis of priority
         ArrayList<Request> allowedRequest = new ArrayList<Request>();
         for (Request i : requests) {
-            if ((currentBandwidth + i.getMaxRequiredRequest()) <= maxBandwidth) {
+            if ((currentBandwidth + i.getMaxRequiredRequest()-i.getCurrentAllocatedRequest()) <= maxBandwidth) {
             	//Checking if the request can be transferred from the subscriber station via
                 // the base-subscriber bandwidth.
                 allowedRequest.add(i);
-                currentBandwidth += i.getMaxRequiredRequest();
+                currentBandwidth += (i.getMaxRequiredRequest()-i.getCurrentAllocatedRequest());
             }
         }
         return allowedRequest; // Returns List of Allowed Requests
 
     }
+    
+    /**
+     * Scheduling of the requests available at each subscriber stations
+     * according to maximum allowed requests that can be transferred for each of
+     * the individual subscriber- base station links. The functions returns all
+     * those allowed requests
+     *
+     * @param nodeRequests
+     * @return
+     */
+    public ArrayList<Request> schedulingWithFrames(ArrayList<Request> nodeRequests,double currentTime) {
+        int currentBandwidth = 0;
+        requests = Request.arrangeRequestsOnBasisOfWeight(nodeRequests, currentTime);// Sort the Requests on basis of priority
+        ArrayList<Request> allowedRequest = new ArrayList<Request>();
+        for (Request i : requests) {
+            if ((currentBandwidth + i.getMaxRequiredRequest()-i.getCurrentAllocatedRequest()) <= maxBandwidth) {
+            	//Checking if the request can be transferred from the subscriber station via
+                // the base-subscriber bandwidth.
+                allowedRequest.add(i);
+                currentBandwidth += (i.getMaxRequiredRequest()-i.getCurrentAllocatedRequest());
+            }
+        }
+        return allowedRequest; // Returns List of Allowed Requests
+
+    }
+
     
     /**
      * Read Subscriber Station File as Input

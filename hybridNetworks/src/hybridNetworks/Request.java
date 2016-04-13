@@ -13,29 +13,47 @@ public class Request {
     private static int count;
     private int id;
     private int priority;
-    private int age;
+    private double age;
     private double currentAllocatedRequest;
     private double maxRequiredRequest;
     private double durationRequest;
     private double startTimeRequest;
     private int nodeId;
     private double weight;
-    private Node nodeObject;
+    
+	private Node nodeObject;
 
-    private void calculateWeight(){
+    private void calculateWeight(double currentTime){
     	/**
     	 * Calculate the final measurement of priority of a request
     	 * alpha*age+(1-alpha)*deadline
     	 */
-  
+		if(currentTime>=startTimeRequest && currentTime<=startTimeRequest+durationRequest)
+			age=currentTime-startTimeRequest+1;
+		else 
+			age=0;
+    	double alpha=Constants.ALPHA;
+    	weight=(alpha*age)/((1-alpha)*(startTimeRequest+durationRequest+1-currentTime));
     }
     
-    public static ArrayList<Request> sortByWeight(ArrayList<Request> requests){
+    public static ArrayList<Request> arrangeRequestsOnBasisOfWeight(ArrayList<Request> requests,double currentTime){
     	/**
     	 * Sort all the requests available according to  weights
     	 */
     	
-    	return null;
+    	 RequestWeightComparator weightComparator = new RequestWeightComparator(); //Creating a user defined comparator for weight
+         PriorityQueue<Request> sortedRequests = new PriorityQueue<Request>(count, weightComparator); // Store the requests in Priority Queue on basis of weightComparator defined.
+         for (Request i : requests) {
+        	 i.calculateWeight(currentTime);
+             sortedRequests.add(i);
+         }
+         ArrayList<Request> requestList=new ArrayList<Request>();
+         while(!sortedRequests.isEmpty()){
+         	Request current=sortedRequests.poll();
+         	requestList.add(current);
+         }
+         return requestList; //Return the priority Queue.s
+    	
     }
        
 	/**
@@ -123,6 +141,13 @@ public class Request {
     public Node getNodeObject() {
         return nodeObject;
     }
+    
+    /**
+	 * @return the weight
+	 */
+	public double getWeight() {
+		return weight;
+	}
 
 
 
@@ -130,7 +155,7 @@ public class Request {
 	 * @param currentAllocatedRequest the currentAllocatedRequest to set
 	 */
 	public void setCurrentAllocatedRequest(double currentAllocatedRequest) {
-		this.currentAllocatedRequest = currentAllocatedRequest;
+		this.currentAllocatedRequest += currentAllocatedRequest;
 	}
 	
 	/**
@@ -261,7 +286,7 @@ public class Request {
 
 	public String generateLog() {
 		// TODO Auto-generated method stub
-		String s=getId()+" \t\t "+getPriority()+" \t\t\t "+getCurrentAllocatedRequest()
+		String s=getId()+" \t\t "+getPriority()+" \t\t "+getCurrentAllocatedRequest()
 		+"   \t\t    "+getNodeId()+"   \t\t "+getNodeObject().getSubscriberId()+"   \t\t\t "
 		+getNodeObject().getStationObject().getBaseId();
 		
