@@ -3,9 +3,9 @@ package hybridNetworks;
 public class Constants {
 	static final double SUBSCRIBER_BANDWIDTH=Double.MAX_VALUE; //Bandwidth of Subscriber Station
 	static final double BASE_BANDWIDTH=Double.MAX_VALUE;//Bandwidth of Base Station
-	static final double SIMULATION_TIME=1; //Simulation Running Time
+	static final double SIMULATION_TIME=10; //Simulation Running Time
 	static final int NUMBER_OF_TESTCASES=1; //Number of Testcases
-	static final int INIT_TEST_NO=1; //Initial TestCase Number
+	static final int INIT_TEST_NO=6; //Initial TestCase Number
 	static final String INPUT_DIR="/input"; // Input Directory
 	static final String INPUT_SUBDIR="/testcase";
 	static final String OUTPUT_DIR="/output"; // Output Directory
@@ -22,15 +22,17 @@ public class Constants {
 	static String MOVEMENT_FILE;
 	static final String[] DIR_NAME={"Total","RequestClass","AllocationClass","Plots"};
     static final boolean DEBUG = false;
+    static final boolean READ = false;
+    static final boolean LOG = false;
 	static boolean REFRESH_RUN=true;
 	static final String DELIMITER=" ";
 	static final double FRAME_SIMULATION_TIME = 1;
-	static final int FRAME_SIZE = 300;
-	static final double FRAME_SIMULATION_GAP = 0.5;
-	static final double UGC_PERCENT = 0.6;
-	static final double RTP_PERCENT = 0.2;
-	static final double NRTP_PERCENT = 0.1;
-	static final double BE_PERCENT = 0.1;
+	static int FRAME_SIZE = 300;
+	static double FRAME_SIMULATION_GAP = 0.5;
+	static double UGC_PERCENT = 0.6;
+	static double RTP_PERCENT = 0.2;
+	static double NRTP_PERCENT = 0.1;
+	static double BE_PERCENT = 0.1;
 	static double ALPHA = 0.5;
 	
 	

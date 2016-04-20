@@ -46,8 +46,10 @@ public class BaseStation implements Station {
     	BE = Request.arrangeRequestsOnBasisOfWeight(BE, time);
         	
         	Frame frame=new Frame(time,this);
-        	frame.initializeFrame(UGC, RTP, NRTP, BE);
-        	System.out.println(frame.generateLogFrame());	
+        	//frame.initializeFrame(UGC, RTP, NRTP, BE);
+        	frame.initializeFrameSecondStratergy(UGC, RTP, NRTP, BE);
+        	if(Constants.LOG)
+        		System.out.println(frame.generateLogFrame());	
         	return frame.getRequests();    
     }
     

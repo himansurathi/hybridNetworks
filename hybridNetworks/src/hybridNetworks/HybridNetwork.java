@@ -2,6 +2,7 @@ package hybridNetworks;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HybridNetwork {
@@ -14,17 +15,62 @@ public class HybridNetwork {
 	private static ArrayList<Movement> movements;
 	
 	public static void main(String[] args) throws IOException{
-		frameRequest();
+		varyFrameGap();
 	}
 	
+	private static void varyFrameSize() throws FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		Constants.REFRESH_RUN=true;
+		
+		Constants.setFile(6);
+		for(int i=0;i<=500;i=i+10){
+			//System.out.println("Generating"+ i+"th Testcase");
+		    //Testcase.generateTestcaseWithFrames(i);
+			System.out.println("Processin g"+ i+"th Frame");
+			Constants.FRAME_SIZE=i;
+			wimax2WifiWithFrames();
+			Constants.REFRESH_RUN=false;
+		}		
+	}
+
+	private static void varyFrameGap() throws FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		Constants.REFRESH_RUN=true;
+		
+		Constants.setFile(6);
+		for(double i=0.05;i<1;i=i+0.05){
+			//System.out.println("Generating"+ i+"th Testcase");
+		    //Testcase.generateTestcaseWithFrames(i);
+			System.out.println("Processin g"+ i+"th Frame Time");
+			Constants.FRAME_SIMULATION_GAP=i;
+			wimax2WifiWithFrames();
+			Constants.REFRESH_RUN=false;
+		}		
+	}
+
+	private static void varyAlPHA() throws FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		Constants.REFRESH_RUN=true;
+		
+		Constants.setFile(6);
+		for(double i=0.0;i<1.0;i=i+0.05){
+			//System.out.println("Generating"+ i+"th Testcase");
+		    //Testcase.generateTestcaseWithFrames(i);
+			System.out.println("Processin g"+ i+"th Alpha");
+			Constants.ALPHA=i;
+			wimax2WifiWithFrames();
+			Constants.REFRESH_RUN=false;
+		}		
+	}
+
 	private static void frameRequest() throws FileNotFoundException, IOException {
 		// TODO Auto-generated method stub
 		Constants.REFRESH_RUN=true;
 
 		for(int i=Constants.INIT_TEST_NO;i<Constants.INIT_TEST_NO+Constants.NUMBER_OF_TESTCASES;i++){
-			System.out.println("Generating"+ i+"th Testcase");
-		    Testcase.generateTestcaseWithFrames(i);
-			System.out.println("Processing"+ i+"th Testcase");
+			//System.out.println("Generating"+ i+"th Testcase");
+		    //Testcase.generateTestcaseWithFrames(i);
+			System.out.println("Processin g"+ i+"th Testcase");
 			Constants.setFile(i);
 			wimax2WifiWithFrames();
 			Constants.REFRESH_RUN=false;
@@ -49,7 +95,8 @@ public class HybridNetwork {
 		requests = Request.readInput();
 		String title="\nRequest File";
 		String format="Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId";
-		Request.displayRequest(title,format,requests);
+		if(Constants.READ)
+			Request.displayRequest(title,format,requests);
 
 		/**
 		 * Get all node data from node file
@@ -57,7 +104,8 @@ public class HybridNetwork {
 		nodes=Node.readInput();
 		title="\nNode File";
 		format="id : initialX : initialY : currentX : currentY : subscriberId";
-		Node.displayNodes(title,format,nodes);
+		if(Constants.READ)
+			Node.displayNodes(title,format,nodes);
 		
 		/**
 		 * Get all Subscriber Station data from subscriberStation file
@@ -65,7 +113,8 @@ public class HybridNetwork {
 		subscribers=SubscriberStation.readInput();
 		title="\nSubscriber Station File";
 		format="id : x : y : maxBandwidth : range : baseId";
-		SubscriberStation.displaySubscriberStation(title,format,subscribers);
+		if(Constants.READ)
+			SubscriberStation.displaySubscriberStation(title,format,subscribers);
 
 		/**
 		 * Get all base station data from base station file
@@ -73,7 +122,8 @@ public class HybridNetwork {
 		bases=BaseStation.readInput();
 		title="\nBase Station File";
 		format="id : x : y : maxBandwidth : frameSize : range";
-		BaseStation.displayBaseStation(title,format,bases);
+		if(Constants.READ)
+			BaseStation.displayBaseStation(title,format,bases);
 
 		/**
 		 * Get all movement data from movement file
@@ -81,7 +131,8 @@ public class HybridNetwork {
 		movements=Movement.readInput();
 		title="\nMovement File";
 		format="id : angle : speed : startMovement : durationMovement : nodeId";
-		Movement.displayMovement(title,format,movements);
+		if(Constants.READ)
+			Movement.displayMovement(title,format,movements);
 
 		/**
 		 * Assign all obtained data to static array variables
@@ -112,10 +163,11 @@ public class HybridNetwork {
 		 * calculate the scenario for that instant and allocate accordingly
 		 */
                 
+			ArrayList<Request> totalRequestAtTime=new ArrayList<Request>();
         
 		for (double i = 0; i < Constants.SIMULATION_TIME; i++) {
 
-            for(double j=0;j<=Constants.FRAME_SIMULATION_TIME;j+=Constants.FRAME_SIMULATION_GAP){
+            for(double j=0;j<Constants.FRAME_SIMULATION_TIME;j+=Constants.FRAME_SIMULATION_GAP){
 
             	ArrayList<Request> requestAtTime=getRequestAtSpecificTime(arrangedRequest,i+j);
             	requestAtTime=allotRequestToSpecificNodes(requestAtTime, nodes);
@@ -128,7 +180,6 @@ public class HybridNetwork {
 					Node.displayNodes(title,format,nodes);
 				}
 			
-				ArrayList<Request> totalRequestAtTime=new ArrayList<Request>();
 				for(BaseStation base:bases){
 					ArrayList<Request> requestAllowedAtTime=totalRequestWithFrameSubscriberStation(requestAtTime,subscribers,base.getId(),i+j);
 		                
@@ -142,15 +193,17 @@ public class HybridNetwork {
 	                 * Assigning requests under the base stations connected directly to node 
 	                 */
                 
-	                System.out.println("\n \n Requests from nodes connected to  base station in any way served");
-                    System.out.println("Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId");
+	                if(Constants.DEBUG){
+	                	System.out.println("\n \n Requests from nodes connected to  base station in any way served");
+	                	System.out.println("Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId");
+	                }
                     for(Request request:requestAtTime){
                     	if(request.getNodeObject().getStationObject() instanceof BaseStation)
                     	{
                     		if(request.getNodeObject().getStationObject() == base)
                 			{
                 				requestAllowedAtTime.add(request);
-                 
+                				if(Constants.DEBUG)
                 				System.out.println(request);
                 			}
                     	}
@@ -163,13 +216,25 @@ public class HybridNetwork {
 					format="Id : Priority : CurrentAllocatedRequest : MaxRequiredRequest : DurationRequest : StartTime : NodeId";
 					Request.displayRequest(title,format,requestServedAtTime);
 				}
+				
+				ArrayList<Request> tempRequest=new ArrayList<Request>();
+				for(Request r1: totalRequestAtTime){
+					int flag=0;
+					for(Request r2: requestServedAtTime){
+						if(r1.getId()==r2.getId()){
+							flag=1;
+						}
+					}
+					if(flag==0)
+						tempRequest.add(r1);
+				}
+				totalRequestAtTime=tempRequest;
 				totalRequestAtTime.addAll(requestServedAtTime);
+				
 			}
-				//Statistics.findResult(totalRequestAtTime,requestAtTime);
-
 		}
-
 	}
+	Statistics.findResult(totalRequestAtTime,arrangedRequest);
 }
 
 	private static void staticRequest() throws IOException{

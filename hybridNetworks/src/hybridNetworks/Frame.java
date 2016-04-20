@@ -46,6 +46,33 @@ public class Frame {
 		freeSize=BEsize;
 		return this;
 	}
+
+	public Frame initializeFrameSecondStratergy(ArrayList<Request> UGC,ArrayList<Request> RTP,
+			ArrayList<Request> NRTP,ArrayList<Request> BE){
+		/**
+		 * 1. Calculate and Adjust frame bandwidth for each of the classes according to available
+		 * request in each of the classes
+		 * 2. Extract the topmost element from each of the queues according to 
+		 * the bandwidth (60% UGC,20% RTPS,10% NRTPS, 10% BE)
+		 */
+
+		requests=allocationFrame(UGC,UGCsize,4);
+		double total=(Constants.RTP_PERCENT+Constants.NRTP_PERCENT+Constants.BE_PERCENT);
+		RTPSsize+=(UGCsize*Constants.RTP_PERCENT/total);
+		NRTPSsize+=(UGCsize*Constants.NRTP_PERCENT/total);
+		BEsize+=(UGCsize*Constants.BE_PERCENT/total);
+		
+		requests.addAll(allocationFrame(RTP,RTPSsize ,3));
+		total=(Constants.NRTP_PERCENT+Constants.BE_PERCENT);
+		NRTPSsize+=(RTPSsize*Constants.NRTP_PERCENT/total);
+		BEsize+=(RTPSsize*Constants.BE_PERCENT/total);
+		
+		requests.addAll(allocationFrame(NRTP, NRTPSsize,2));
+		BEsize+=NRTPSsize;
+		requests.addAll(allocationFrame(BE, BEsize,1));
+		freeSize=BEsize;
+		return this;
+	}
 	
 	/**
 	 * 

@@ -57,17 +57,24 @@ public class Statistics {
     	for(Request r: allocatedRequests){
     		int classes=r.getPriority();
     		
-    		if(numberOfServedRequestClass.containsKey(classes))
-    			numberOfServedRequestClass.put(classes, numberOfServedRequestClass.get(classes)+1);
-	  		else
-    			numberOfServedRequestClass.put(classes, 1);
+    		if(numberOfServedRequestClass.containsKey(classes)){
+    			if(r.getCurrentAllocatedRequest()>=r.getMaxRequiredRequest())
+    				numberOfServedRequestClass.put(classes, numberOfServedRequestClass.get(classes)+1);
+    		}
+	  		else{
+    			if(r.getCurrentAllocatedRequest()>=r.getMaxRequiredRequest())
+        			numberOfServedRequestClass.put(classes, 1);
+    			else
+        			numberOfServedRequestClass.put(classes, 0);
+	  		}
     		
     		if(demandServedRequestClass.containsKey(classes))
     			demandServedRequestClass.put(classes, demandServedRequestClass.get(classes)+r.getCurrentAllocatedRequest());
         	else
     			demandServedRequestClass.put(classes, r.getCurrentAllocatedRequest());
     		
-    		servedRequest++;
+    		if(r.getCurrentAllocatedRequest()>=r.getMaxRequiredRequest())
+    			servedRequest++;
         	servedAllocationRequest+=r.getCurrentAllocatedRequest();
          }
     	
@@ -76,6 +83,7 @@ public class Statistics {
         	if(outputDir.exists()){
         		if(!deleteDirectory(outputDir))
         			System.out.println("Could not remove directory");
+        			deleteDirectory(outputDir);
         	}
         	if(Constants.DEBUG)
         		System.out.println("Creating Directory ");
@@ -137,10 +145,11 @@ public class Statistics {
 					writer.append(demandTotalRequestClass.get(i)+Constants.DELIMITER+"0\n");
 				writer.flush();
 				writer.close();
+				
 			}
 
 		} catch (IOException e) {
-			 System.out.println("Error in displaying Testcase files!!!!!");
+			 System.out.println("Error in displaying Testcase files!!!!!\n"+e.getMessage());
 		}
     }
 	
