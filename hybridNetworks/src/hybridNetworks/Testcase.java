@@ -160,9 +160,9 @@ public class Testcase {
         		file.createNewFile();
 			writer = new FileWriter(file);
 			number=2;
-			data="5000.0 0.0 128 20 0";
+			data="5000.0 0.0 "+Constants.SUBSCRIBER_BASE_BANDWIDTH +" 20 0";
 			writer.append(number+"\n"+data+"\n");				
-			data="0.0 5000.0 128 20 0";
+			data="0.0 5000.0 "+Constants.SUBSCRIBER_BASE_BANDWIDTH+" 20 0";
 			writer.append(data);
 			writer.flush();
 			writer.close();
@@ -219,7 +219,7 @@ public class Testcase {
 			for(int j=1;j<=priorityNumber;j++){
 				int requestSize=64+(int)(Math.random()*65);
 				int nodeNumber=(int)(Math.random()*20);
-				int duration=1+(int)(Math.random()*10);
+				int duration=1+(int)(Math.random()*Constants.DURATION_REQUEST_TIME);
 				data="4 "+requestSize+" "+duration+" 0 "+nodeNumber;
 				writer.append(data+"\n");
 				count++;
@@ -228,7 +228,7 @@ public class Testcase {
 			for(int j=1;j<=priorityNumber;j++){
 				int requestSize=30+(int)(Math.random()*35);
 				int nodeNumber=(int)(Math.random()*20);
-				int duration=1+(int)(Math.random()*10);
+				int duration=1+(int)(Math.random()*Constants.DURATION_REQUEST_TIME);
 				data="3 "+requestSize+" "+duration+" 0 "+nodeNumber;
 				writer.append(data+"\n");
 				count++;
@@ -237,7 +237,7 @@ public class Testcase {
 				int priority=1+(int)(Math.random()*2);
 				int requestSize=1+(int)(Math.random()*30);
 				int nodeNumber=(int)(Math.random()*20);
-				int duration=1+(int)(Math.random()*10);
+				int duration=1+(int)(Math.random()*Constants.DURATION_REQUEST_TIME);
 				data=priority+" "+requestSize+" "+duration+" 0 "+nodeNumber;
 				writer.append(data+"\n");
 			}

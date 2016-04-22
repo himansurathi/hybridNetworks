@@ -4,7 +4,7 @@ public class Constants {
 	static final double SUBSCRIBER_BANDWIDTH=Double.MAX_VALUE; //Bandwidth of Subscriber Station
 	static final double BASE_BANDWIDTH=Double.MAX_VALUE;//Bandwidth of Base Station
 	static final double SIMULATION_TIME=10; //Simulation Running Time
-	static final int NUMBER_OF_TESTCASES=1; //Number of Testcases
+	static final int NUMBER_OF_TESTCASES=100; //Number of Testcases
 	static final int INIT_TEST_NO=6; //Initial TestCase Number
 	static final String INPUT_DIR="/input"; // Input Directory
 	static final String INPUT_SUBDIR="/testcase";
@@ -33,7 +33,9 @@ public class Constants {
 	static double RTP_PERCENT = 0.2;
 	static double NRTP_PERCENT = 0.1;
 	static double BE_PERCENT = 0.1;
-	static double ALPHA = 0.5;
+	static double ALPHA = 0.0;
+	static final int DURATION_REQUEST_TIME=10;
+	static int SUBSCRIBER_BASE_BANDWIDTH=300;
 	
 	
 	public static void setFile(int TEST_NO){

@@ -15,9 +15,23 @@ public class HybridNetwork {
 	private static ArrayList<Movement> movements;
 	
 	public static void main(String[] args) throws IOException{
-		varyFrameGap();
+		frameRequest();
 	}
 	
+	private static void varySubscriberBandwidth() throws FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		Constants.REFRESH_RUN=true;
+		
+		for(int i=0;i<=300;i=i+10){
+			//System.out.println("Generating"+ i+"th Testcase");
+		    //Testcase.generateTestcaseWithFrames(i);
+			Constants.setFile(i);
+			System.out.println("Processin g"+ i+"th Base-Subscriber Bandwidth");
+			wimax2WifiWithFrames();
+			Constants.REFRESH_RUN=false;
+		}		
+	}
+
 	private static void varyFrameSize() throws FileNotFoundException, IOException {
 		// TODO Auto-generated method stub
 		Constants.REFRESH_RUN=true;
@@ -37,10 +51,10 @@ public class HybridNetwork {
 		// TODO Auto-generated method stub
 		Constants.REFRESH_RUN=true;
 		
+		System.out.println("Generating 6th Testcase");
+	    Testcase.generateTestcaseWithFrames(6);
 		Constants.setFile(6);
-		for(double i=0.05;i<1;i=i+0.05){
-			//System.out.println("Generating"+ i+"th Testcase");
-		    //Testcase.generateTestcaseWithFrames(i);
+		for(double i=0.02;i<1;i=i+0.1){
 			System.out.println("Processin g"+ i+"th Frame Time");
 			Constants.FRAME_SIMULATION_GAP=i;
 			wimax2WifiWithFrames();
@@ -56,7 +70,7 @@ public class HybridNetwork {
 		for(double i=0.0;i<1.0;i=i+0.05){
 			//System.out.println("Generating"+ i+"th Testcase");
 		    //Testcase.generateTestcaseWithFrames(i);
-			System.out.println("Processin g"+ i+"th Alpha");
+			System.out.println("Processing "+ i+"th Alpha");
 			Constants.ALPHA=i;
 			wimax2WifiWithFrames();
 			Constants.REFRESH_RUN=false;
@@ -70,7 +84,7 @@ public class HybridNetwork {
 		for(int i=Constants.INIT_TEST_NO;i<Constants.INIT_TEST_NO+Constants.NUMBER_OF_TESTCASES;i++){
 			//System.out.println("Generating"+ i+"th Testcase");
 		    //Testcase.generateTestcaseWithFrames(i);
-			System.out.println("Processin g"+ i+"th Testcase");
+			System.out.println("Processing "+ i+"th Testcase");
 			Constants.setFile(i);
 			wimax2WifiWithFrames();
 			Constants.REFRESH_RUN=false;
